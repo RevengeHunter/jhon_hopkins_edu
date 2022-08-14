@@ -19,10 +19,8 @@ class AcademicYearListGlobal {
 
   List<AcademicYearModel> get getAcademicYearList => _academicYearList;
 
-  createAcademicYearList() {
-    _academicYearService.getAcademicYearList(_sharp.documentNumber).then((value){
-      _academicYearList = value;
-    });
+  createAcademicYearList() async {
+    _academicYearList = await _academicYearService.getAcademicYearList(_sharp.documentNumber);
   }
 
   clearAcademicYearList() {

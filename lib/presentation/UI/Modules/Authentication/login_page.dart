@@ -24,6 +24,8 @@ class _LoginPageState extends State<LoginPage> {
       AuthenticationLoginService();
 
   final SPGlobal _prefs = SPGlobal();
+  final AcademicYearListGlobal _academicYearListGlobal = AcademicYearListGlobal();
+  final CurrentEnrollmentGlobal _currentEnrollmentGlobal = CurrentEnrollmentGlobal();
 
   bool _isLoading = false;
 
@@ -59,14 +61,9 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.email = _googleSignInAccount.email;
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
-
-    final AcademicYearListGlobal _academicYearListGlobal =
-    AcademicYearListGlobal();
+    
     _academicYearListGlobal.createAcademicYearList();
-
-    final CurrentEnrollmentGlobal _currentEnrollmentGlobal =
-    CurrentEnrollmentGlobal();
-    _currentEnrollmentGlobal.createCurrentEnrollment();
+    await _currentEnrollmentGlobal.createCurrentEnrollment();
 
     Navigator.pushAndRemoveUntil(
       context,

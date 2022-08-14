@@ -16,27 +16,22 @@ class CurrentEnrollmentGlobal {
   final EnrollmentService _enrollmentService = EnrollmentService();
   late EnrollmentCurrentModel _enrollmentCurrentModel;
 
-  createCurrentEnrollment() {
+  Future<EnrollmentCurrentModel> createCurrentEnrollment() async {
+    EnrollmentCurrentModel? enrollmentCurrentModel = await _enrollmentService.getCurrentEnrollmentByStudent();
+    _enrollmentCurrentModel = EnrollmentCurrentModel(
+      id: enrollmentCurrentModel!.id,
+      personId: enrollmentCurrentModel.personId,
+      sectionId: enrollmentCurrentModel.sectionId,
+      sectionName: enrollmentCurrentModel.sectionName,
+      gradeName: enrollmentCurrentModel.gradeName,
+      levelName: enrollmentCurrentModel.levelName,
+      statusEnrollment: enrollmentCurrentModel.statusEnrollment,
+    );
 
-    _enrollmentService.getCurrentEnrollmentByStudent().then((value) {
+    _prefs.gradeName = enrollmentCurrentModel.gradeName;
+    _prefs.sectionName = enrollmentCurrentModel.sectionName;
 
-      if(value != null){
-        _enrollmentCurrentModel = EnrollmentCurrentModel(
-          id: value.id,
-          personId: value.personId,
-          sectionId: value.sectionId,
-          sectionName: value.sectionName,
-          gradeName: value.gradeName,
-          levelName: value.levelName,
-          statusEnrollment: value.statusEnrollment,
-        );
-
-        _prefs.gradeName = value.gradeName;
-        _prefs.sectionName = value.sectionName;
-        print(_prefs.gradeName);
-        print(_prefs.sectionName);
-      }
-    });
+    return _enrollmentCurrentModel;
   }
 
   EnrollmentCurrentModel get getEnrollmentCurrentModel => _enrollmentCurrentModel;
