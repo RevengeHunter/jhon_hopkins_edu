@@ -39,6 +39,7 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
       if (value != null) {
         _listPayment = value;
         _isLoading = false;
+        dataDistribution();
         setState(() {});
         return;
       }
@@ -57,6 +58,7 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
         _listPaymentAux.add(element);
       }
     });
+    setState(() {});
   }
 
   @override
@@ -121,7 +123,7 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                 !_isLoading ? Container(
                   child: Column(
                     children: [
-                      _listPaymentAux.isNotEmpty ? Row(
+                      _listPayment.isNotEmpty ? Row(
                         children: [
                           Expanded(
                             child: ElevatedButton(
@@ -129,7 +131,6 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                                 if (!debts){
                                   debts = true;
                                   dataDistribution();
-                                  setState(() {});
                                 }
                               },
                               style: ElevatedButton.styleFrom(
@@ -148,7 +149,6 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                                 if (debts){
                                   debts = false;
                                   dataDistribution();
-                                  setState(() {});
                                 }
                               },
                               style: ElevatedButton.styleFrom(
