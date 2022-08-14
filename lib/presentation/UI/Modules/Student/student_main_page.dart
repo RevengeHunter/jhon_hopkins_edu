@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // import 'package:jhon_hopkins_edu/dominio/Utils/academic_year_list_global.dart';
 // import 'package:jhon_hopkins_edu/dominio/Utils/current_enrollment_global.dart';
+import '../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../Shared/Constants/colors.dart';
 import '../../Shared/GeneralWidgets/my_appbar_widget.dart';
 import 'Attendance/student_attendance_page.dart';
@@ -30,22 +31,18 @@ class _StudentMainPageState extends State<StudentMainPage> {
     StudentPaymentPage(),
   ];
 
-  // final AcademicYearListGlobal _academicYearListGlobal =
-  //     AcademicYearListGlobal();
-  // final CurrentEnrollmentGlobal _currentEnrollmentGlobal =
-  //     CurrentEnrollmentGlobal();
-  //
-  // getGlobals() {
-  //   _academicYearListGlobal.createAcademicYearList();
-  //   _currentEnrollmentGlobal.createCurrentEnrollment();
-  //   setState(() {});
-  // }
+  final AcademicYearListGlobal _academicYearListGlobal =
+      AcademicYearListGlobal();
+
+  getGlobals() async {
+    await _academicYearListGlobal.createAcademicYearList();
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getGlobals();
+    getGlobals();
   }
 
   @override
