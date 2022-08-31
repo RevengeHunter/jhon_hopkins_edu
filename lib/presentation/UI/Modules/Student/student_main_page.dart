@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
-// import 'package:jhon_hopkins_edu/dominio/Utils/academic_year_list_global.dart';
-// import 'package:jhon_hopkins_edu/dominio/Utils/current_enrollment_global.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../../../dominio/Models/user_model.dart';
+import '../../../../dominio/Services/Authentication/authentication_login_service.dart';
 import '../../../../dominio/Utils/academic_year_list_global.dart';
+import '../../../../dominio/Utils/current_enrollment_global.dart';
+import '../../../../dominio/Utils/sp_global.dart';
 import '../../Shared/Constants/colors.dart';
 import '../../Shared/GeneralWidgets/my_appbar_widget.dart';
 import 'Attendance/student_attendance_page.dart';
@@ -23,7 +25,14 @@ class StudentMainPage extends StatefulWidget {
 }
 
 class _StudentMainPageState extends State<StudentMainPage> {
-  int _currentPage = 0;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
+  final AuthenticationLoginService authenticationLoginService =
+      AuthenticationLoginService();
+  final SPGlobal _prefs = SPGlobal();
+  final CurrentEnrollmentGlobal _currentEnrollmentGlobal =
+      CurrentEnrollmentGlobal();
+  final AcademicYearListGlobal _academicYearListGlobal =
+      AcademicYearListGlobal();
 
   final List<Widget> _pages = [
     StudentRecordPage(),
@@ -31,8 +40,27 @@ class _StudentMainPageState extends State<StudentMainPage> {
     StudentPaymentPage(),
   ];
 
-  final AcademicYearListGlobal _academicYearListGlobal =
-      AcademicYearListGlobal();
+  int _currentPage = 0;
+
+  reGoogleSignIn() async {
+    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+
+    if (_googleSignInAccount == null) return;
+
+    GoogleSignInAuthentication _googleSignInAuth =
+        await _googleSignInAccount.authentication;
+
+    UserModel? userModel = await authenticationLoginService
+        .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
+
+    if (userModel == null) return;
+
+    _prefs.jwt = userModel.jwtToken;
+    _prefs.idToken = _googleSignInAuth.idToken!;
+
+    await _currentEnrollmentGlobal.createCurrentEnrollment();
+    await _academicYearListGlobal.createAcademicYearList();
+  }
 
   getGlobals() async {
     await _academicYearListGlobal.createAcademicYearList();
@@ -42,7 +70,11 @@ class _StudentMainPageState extends State<StudentMainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getGlobals();
+    if (_googleSignIn.currentUser == null) {
+      reGoogleSignIn();
+    } else {
+      getGlobals();
+    }
   }
 
   @override

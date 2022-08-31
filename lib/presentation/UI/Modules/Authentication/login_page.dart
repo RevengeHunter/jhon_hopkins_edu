@@ -61,7 +61,8 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.email = _googleSignInAccount.email;
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
-    
+    _prefs.idToken = _googleSignInAuth.idToken!;
+
     _academicYearListGlobal.createAcademicYearList();
     await _currentEnrollmentGlobal.createCurrentEnrollment();
 

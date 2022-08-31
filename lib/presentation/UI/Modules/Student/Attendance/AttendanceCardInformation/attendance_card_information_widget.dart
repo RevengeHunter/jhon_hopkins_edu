@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/attendance_model.dart';
+import 'package:jhon_hopkins_edu/presentation/UI/Modules/Student/Attendance/AttendanceDetail/attendance_absent_detail_page.dart';
 
 import '../../../../Shared/Constants/colors.dart';
 import '../../../../Shared/Constants/space_between.dart';
+import '../../../../Shared/GeneralWidgets/chip_information_widget.dart';
 
 class AttendanceCardInformationWidget extends StatelessWidget {
-
   AttendanceModel attendanceModel;
-  AttendanceCardInformationWidget({required this.attendanceModel,});
+
+  AttendanceCardInformationWidget({
+    required this.attendanceModel,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5.0),
-      margin: const EdgeInsets.only(right: 15.0,bottom: 15.0,left: 15.0),
+      padding: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.only(right: 10.0, bottom: 10.0, left: 10.0),
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -28,29 +32,30 @@ class AttendanceCardInformationWidget extends StatelessWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            attendanceModel.courseName,
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w800,
-              color: kBrandPrimaryColor,
-            ),
-          ),
-          Text(
-            "Resumen Asistencia: ${attendanceModel.total}",
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.w500,
-              color: kBrandPrimaryColor.withOpacity(0.8),
-            ),
-          ),
-          divider12,
-          Divider(
-            thickness: 0.8,
-            color: Colors.blueAccent.withOpacity(0.65),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                attendanceModel.courseName,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: kBrandPrimaryColor,
+                ),
+              ),
+              Text(
+                "${((attendanceModel.quantityAttended*100)/attendanceModel.total).toStringAsFixed(1)}%",
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                  color: kBrandPrimaryColor,
+
+                ),
+              ),
+            ],
           ),
           Text(
             "Asistencias llamadas: ${attendanceModel.total}",
@@ -59,29 +64,52 @@ class AttendanceCardInformationWidget extends StatelessWidget {
               fontSize: 16.0,
             ),
           ),
-          divider6,
-          Text(
-            "Presente: ${attendanceModel.quantityAttended}",
-            style: TextStyle(
-              color: kBrandPrimaryColor.withOpacity(0.65),
-              fontSize: 16.0,
-            ),
+          divider3,
+          Divider(
+            thickness: 0.8,
+            color: kBrandPrimaryColor.withOpacity(0.3),
           ),
           divider6,
-          Text(
-            "Faltas: ${attendanceModel.quantityAbsent}",
-            style: TextStyle(
-              color: kBrandPrimaryColor.withOpacity(0.65),
-              fontSize: 16.0,
-            ),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 10.0,
+            children: [
+              ChipInformationWidget(
+                text: "Presente: ${attendanceModel.quantityAttended}",
+              ),
+              ChipInformationWidget(
+                text: "Faltas: ${attendanceModel.quantityAbsent}",
+              ),
+              ChipInformationWidget(
+                text: "Permisos: ${attendanceModel.quantityLicense}",
+              ),
+              ChipInformationWidget(
+                text: "Justificó: ${attendanceModel.quantityJustify}",
+              ),
+            ],
+          ),
+          Divider(
+            thickness: 0.8,
+            color: kBrandPrimaryColor.withOpacity(0.3),
           ),
           divider6,
-          Text(
-            "Permisos: ${attendanceModel.quantityLicense}",
-            style: TextStyle(
-              color: kBrandPrimaryColor.withOpacity(0.65),
-              fontSize: 16.0,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AttendanceAbsentDetailPage(attendanceModel: attendanceModel,)));
+                },
+                style: ElevatedButton.styleFrom(primary: kBrandPrimaryColor,),
+                child: const Text(
+                  "Inasistencias",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.0,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

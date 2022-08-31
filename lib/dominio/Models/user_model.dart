@@ -5,7 +5,7 @@ class UserModel {
     required this.isVerified,
     required this.jwtTokenExpireDate,
     required this.jwtToken,
-    required this.personId,
+    this.personId,
     required this.documentNumber,
   });
 
@@ -14,7 +14,7 @@ class UserModel {
   bool isVerified;
   DateTime jwtTokenExpireDate;
   String jwtToken;
-  int personId;
+  int? personId;
   String documentNumber;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -23,7 +23,7 @@ class UserModel {
     isVerified: json["isVerified"],
     jwtTokenExpireDate: DateTime.parse(json["jwtTokenExpireDate"]),
     jwtToken: json["jwtToken"],
-    personId: json["personId"],
+    personId: json["personId"] ?? 0,
     documentNumber: json["documentNumber"],
   );
 

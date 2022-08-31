@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jhonshopkins.jhon_hopkins_edu">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Jhon Hopkins App"
         android:name="${applicationName}"

@@ -5,6 +5,7 @@ class AttendanceModel {
     required this.quantityAttended,
     required this.quantityAbsent,
     required this.quantityLicense,
+    required this.quantityJustify,
     this.details,
   });
 
@@ -13,6 +14,7 @@ class AttendanceModel {
   int quantityAttended;
   int quantityAbsent;
   int quantityLicense;
+  int quantityJustify;
   List<Detail>? details;
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) => AttendanceModel(
@@ -21,6 +23,7 @@ class AttendanceModel {
     quantityAttended: json["quantityAttended"],
     quantityAbsent: json["quantityAbsent"],
     quantityLicense: json["quantityLicense"],
+    quantityJustify: json["quantityJustify"],
     details: List<Detail>.from(json["details"].map((x) => Detail.fromJson(x))),
   );
 
@@ -30,6 +33,7 @@ class AttendanceModel {
     "quantityAttended": quantityAttended,
     "quantityAbsent": quantityAbsent,
     "quantityLicense": quantityLicense,
+    "quantityJustify": quantityJustify,
     "details": List<dynamic>.from(details??[].map((x) => x.toJson())),
   };
 }

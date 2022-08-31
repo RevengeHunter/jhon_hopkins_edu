@@ -55,7 +55,7 @@ class MyAppBarWidget extends StatelessWidget {
           ),
         ],
       ),
-      titleSpacing: 10.0,
+      titleSpacing: 15.0,
       elevation: 0,
       leading: null,
       automaticallyImplyLeading: false,
@@ -81,6 +81,7 @@ class MyAppBarWidget extends StatelessWidget {
                   _prefs.gradeName = "";
                   _prefs.isLogin = false;
                   _prefs.jwt = "";
+                  _prefs.idToken = "";
 
                   _googleSignIn.signOut();
 

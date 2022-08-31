@@ -8,6 +8,7 @@ import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../../../dominio/Utils/sp_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/space_between.dart';
+import '../../../Shared/GeneralWidgets/background_logo_widget.dart';
 import 'AttendanceCardInformation/attendance_card_information_widget.dart';
 
 class StudentAttendancePage extends StatefulWidget {
@@ -54,76 +55,81 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          //clipBehavior: Clip.none,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                divider12,
-                const Text(
-                  "Mi asistencia",
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
-                    color: kBrandPrimaryColor,
-                  ),
-                ),
-                divider3,
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          children: [
+            BackgroundLogoWidget(),
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              //clipBehavior: Clip.none,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    divider12,
                     const Text(
-                      "Periodo académico:",
+                      "Mi asistencia",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w700,
+                        color: kBrandPrimaryColor,
+                      ),
                     ),
-                    dividerWidth20,
-                    Wrap(
-                      children: _academicYearListGlobal.getAcademicYearList
-                          .map(
-                            (e) => FilterChip(
-                              selected: statusValue == e.academicYearId,
-                              selectedColor: statusColor["Selected"],
-                              label: Text(e.academicYearName),
-                              labelStyle: TextStyle(
-                                color: statusValue == e.academicYearId
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: statusValue == e.academicYearId
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
-                              ),
-                              checkmarkColor: Colors.white,
-                              onSelected: (bool isSelected) {
-                                academicYearSelected(e);
-                              },
-                            ),
+                    divider3,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Periodo académico:",
+                        ),
+                        dividerWidth20,
+                        Wrap(
+                          children: _academicYearListGlobal.getAcademicYearList
+                              .map(
+                                (e) => FilterChip(
+                                  selected: statusValue == e.academicYearId,
+                                  selectedColor: statusColor["Selected"],
+                                  label: Text(e.academicYearName),
+                                  labelStyle: TextStyle(
+                                    color: statusValue == e.academicYearId
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: statusValue == e.academicYearId
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
+                                  ),
+                                  checkmarkColor: Colors.white,
+                                  onSelected: (bool isSelected) {
+                                    academicYearSelected(e);
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                    divider12,
+                    !_isLoading
+                        ? Column(
+                            children: _attendanceList
+                                .map(
+                                  (e) => AttendanceCardInformationWidget(
+                                      attendanceModel: e),
+                                )
+                                .toList(),
                           )
-                          .toList(),
-                    ),
+                        : SizedBox(
+                            height: height * 0.7,
+                            width: width,
+                            child: const LoadingWidget(),
+                          ),
+                    divider20,
                   ],
                 ),
-                divider12,
-                !_isLoading
-                    ? Column(
-                        children: _attendanceList
-                            .map(
-                              (e) => AttendanceCardInformationWidget(
-                                  attendanceModel: e),
-                            )
-                            .toList(),
-                      )
-                    : SizedBox(
-                        height: height * 0.7,
-                        width: width,
-                        child: const LoadingWidget(),
-                      ),
-                divider20,
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
