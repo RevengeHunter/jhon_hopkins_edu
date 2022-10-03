@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:jhon_hopkins_edu/presentation/UI/Modules/Student/Introduction/introduction_page.dart';
 import '../../../../dominio/Models/user_model.dart';
 import '../../../../dominio/Services/Authentication/authentication_login_service.dart';
 import '../../../../dominio/Utils/academic_year_list_global.dart';
@@ -35,6 +36,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
       AcademicYearListGlobal();
 
   final List<Widget> _pages = [
+    IntroductionPage(),
     StudentRecordPage(),
     StudentAttendancePage(),
     StudentPaymentPage(),
@@ -105,9 +107,17 @@ class _StudentMainPageState extends State<StudentMainPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
+              Icons.pending,
+              color:
+              _currentPage == 0 ? kBrandPrimaryColor : kBrandSecondaryColor,
+            ),
+            label: "Intro",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
               Icons.list_alt_rounded,
               color:
-                  _currentPage == 0 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 1 ? kBrandPrimaryColor : kBrandSecondaryColor,
             ),
             label: "Notas",
           ),
@@ -115,7 +125,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.verified_user_rounded,
               color:
-                  _currentPage == 1 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 2 ? kBrandPrimaryColor : kBrandSecondaryColor,
             ),
             label: "Asistencia",
           ),
@@ -123,7 +133,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.account_balance_wallet,
               color:
-                  _currentPage == 2 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 3 ? kBrandPrimaryColor : kBrandSecondaryColor,
             ),
             label: "Deudas",
           ),

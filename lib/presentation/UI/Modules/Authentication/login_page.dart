@@ -53,8 +53,8 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    _prefs.idPerson = 5; //userModel.personId;
-    _prefs.documentNumber = "70328354"; //userModel.documentNumber;
+    _prefs.idPerson = userModel.personId!;
+    _prefs.documentNumber = userModel.documentNumber;
     _prefs.fullName = _googleSignInAccount.displayName!;
     _prefs.image = _googleSignInAccount.photoUrl!;
     _prefs.role = userModel.roles.first;
