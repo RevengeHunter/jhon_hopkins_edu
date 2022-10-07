@@ -10,7 +10,7 @@ import '../../Shared/Constants/colors.dart';
 import '../../Shared/GeneralWidgets/my_appbar_widget.dart';
 import 'Attendance/student_attendance_page.dart';
 import 'Payment/student_payment_page.dart';
-import 'Record/student_record_page.dart';
+import 'Score/student_score_page.dart';
 
 class StudentMainPage extends StatefulWidget {
   String studentFoto;

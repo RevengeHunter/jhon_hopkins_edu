@@ -7,7 +7,6 @@ import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/space_between.dart';
 
 import '../../../../../dominio/Models/academic_year_model.dart';
-import '../../../Shared/GeneralWidgets/background_logo_widget.dart';
 import '../../../Shared/GeneralWidgets/loading_widget.dart';
 import 'PaymentCardInformation/payment_card_information_widget.dart';
 
@@ -85,7 +84,7 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
       body: SafeArea(
         child: Stack(
           children: [
-            BackgroundLogoWidget(),
+            //BackgroundLogoWidget(),
             SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               //clipBehavior: Clip.none,

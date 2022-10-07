@@ -8,7 +8,6 @@ import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../../../dominio/Utils/sp_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/space_between.dart';
-import '../../../Shared/GeneralWidgets/background_logo_widget.dart';
 import 'AttendanceCardInformation/attendance_card_information_widget.dart';
 
 class StudentAttendancePage extends StatefulWidget {
@@ -57,7 +56,7 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
       body: SafeArea(
         child: Stack(
           children: [
-            BackgroundLogoWidget(),
+            //BackgroundLogoWidget(),
             SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               //clipBehavior: Clip.none,
