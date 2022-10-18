@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:jhon_hopkins_edu/dominio/Models/score_model.dart';
+import 'package:jhon_hopkins_edu/dominio/Services/Score/score_service.dart';
 import '../../../../../dominio/Models/academic_year_model.dart';
 import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/space_between.dart';
+import '../../../Shared/GeneralWidgets/loading_widget.dart';
 
 class StudentRecordPage extends StatefulWidget {
   @override
@@ -11,6 +13,9 @@ class StudentRecordPage extends StatefulWidget {
 }
 
 class _StudentRecordPageState extends State<StudentRecordPage> {
+  final ScoreService _scoreService = ScoreService();
+  List<ScoreModel> _scoreModelList = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -19,32 +24,36 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
 
   final AcademicYearListGlobal _academicYearListGlobal =
       AcademicYearListGlobal();
+
   // final SPGlobal _prefs = SPGlobal();
 
   int statusValue = 0;
   bool _isLoading = false;
 
   academicYearSelected(AcademicYearModel e) {
-    _isLoading = true;
-    setState(() {});
-    statusValue = e.academicYearId;
-    // _attendanceService
-    //     .getAttendance(statusValue, _prefs.documentNumber)
-    //     .then((value) {
-    //   if (value != null) {
-    //     _attendanceList = value;
-    //     _isLoading = false;
-    //     setState(() {});
-    //     return;
-    //   }
-    //   _isLoading = false;
-    //   setState(() {});
-    //   return;
-    // });
+    if (statusValue != e.academicYearId) {
+      _isLoading = true;
+      setState(() {});
+      statusValue = e.academicYearId;
+      _scoreService.getConsolidationScore(e.academicYearId).then((value) {
+        if (value != null) {
+          _scoreModelList = value;
+          _isLoading = false;
+          setState(() {});
+          return;
+        }
+        _isLoading = false;
+        setState(() {});
+        return;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -100,21 +109,28 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
                         ),
                       ],
                     ),
-                    divider12,
-                    divider12,
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ScrollPhysics(),
-                      clipBehavior: Clip.none,
-                      itemCount: 2,
-                      itemBuilder: (BuildContext contex, int index) {
-                        return ListTile(
-                          title: Text(
-                            "Comunicación",
+                    divider20,
+                    !_isLoading
+                        ? Container(
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text("Hola"),
+                                    ),
+                                  ],
+                                ),
+                                divider12,
+                              ],
+                            ),
+                          )
+                        : SizedBox(
+                            height: height * 0.7,
+                            width: width,
+                            child: const LoadingWidget(),
                           ),
-                        );
-                      },
-                    ),
+                    divider20,
                   ],
                 ),
               ),

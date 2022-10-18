@@ -29,22 +29,24 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
   List<AttendanceModel> _attendanceList = [];
 
   academicYearSelected(AcademicYearModel e) {
-    _isLoading = true;
-    setState(() {});
-    statusValue = e.academicYearId;
-    _attendanceService
-        .getAttendance(statusValue, _prefs.documentNumber)
-        .then((value) {
-      if (value != null) {
-        _attendanceList = value;
+    if (statusValue != e.academicYearId) {
+      _isLoading = true;
+      setState(() {});
+      statusValue = e.academicYearId;
+      _attendanceService
+          .getAttendance(statusValue, _prefs.documentNumber)
+          .then((value) {
+        if (value != null) {
+          _attendanceList = value;
+          _isLoading = false;
+          setState(() {});
+          return;
+        }
         _isLoading = false;
         setState(() {});
         return;
-      }
-      _isLoading = false;
-      setState(() {});
-      return;
-    });
+      });
+    }
   }
 
   @override
@@ -111,13 +113,13 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
                     divider12,
                     !_isLoading
                         ? Column(
-                            children: _attendanceList
-                                .map(
-                                  (e) => AttendanceCardInformationWidget(
-                                      attendanceModel: e),
-                                )
-                                .toList(),
-                          )
+                                children: _attendanceList
+                                    .map(
+                                      (e) => AttendanceCardInformationWidget(
+                                          attendanceModel: e),
+                                    )
+                                    .toList(),
+                              )
                         : SizedBox(
                             height: height * 0.7,
                             width: width,

@@ -24,10 +24,14 @@ class _LoginPageState extends State<LoginPage> {
       AuthenticationLoginService();
 
   final SPGlobal _prefs = SPGlobal();
-  final AcademicYearListGlobal _academicYearListGlobal = AcademicYearListGlobal();
-  final CurrentEnrollmentGlobal _currentEnrollmentGlobal = CurrentEnrollmentGlobal();
+  final AcademicYearListGlobal _academicYearListGlobal =
+      AcademicYearListGlobal();
+  final CurrentEnrollmentGlobal _currentEnrollmentGlobal =
+      CurrentEnrollmentGlobal();
 
   bool _isLoading = false;
+
+  final TextEditingController _textEditingController = TextEditingController();
 
   void _loginWithGoogle() async {
     GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
@@ -44,10 +48,13 @@ class _LoginPageState extends State<LoginPage> {
     GoogleSignInAuthentication _googleSignInAuth =
         await _googleSignInAccount.authentication;
 
-    UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
+    // UserModel? userModel = await authenticationLoginService
+    //     .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
 
-    if (userModel == null){
+    UserModel? userModel = await authenticationLoginService
+        .getExternalAuthenticate(_textEditingController.text);
+
+    if (userModel == null) {
       _isLoading = false;
       setState(() {});
       return;
@@ -94,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.center,
                 child: !_isLoading
                     ? Container(
-                        height: height * 0.50,
+                        height: height * 0.70,
                         width: width * 0.8,
                         padding: const EdgeInsets.symmetric(
                             vertical: 30.0, horizontal: 20.0),
@@ -120,6 +127,13 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                 fontSize: 12.0,
                               ),
+                            ),
+                            divider20,
+                            TextField(
+                              controller: _textEditingController,
+                              decoration: const InputDecoration(
+                                  hintText: "Correo electronico"),
+                              maxLines: 1,
                             ),
                             divider20,
                             ElevatedButton(
@@ -148,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       )
-                    : LoadingWidget(),
+                    : const LoadingWidget(),
               ),
             ),
           ],

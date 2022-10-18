@@ -8,10 +8,10 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: SizedBox(
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
         child: CircularProgressIndicator(
-          strokeWidth: 2,
+          strokeWidth: 3,
           color: kBrandPrimaryColor,
         ),
       ),

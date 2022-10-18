@@ -32,21 +32,23 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
   bool debts = true;
 
   academicYearSelected(AcademicYearModel e) {
-    _isLoading = true;
-    setState(() {});
-    statusValue = e.academicYearId;
-    _paymentService.getPayment(e.academicYearId, _prefs.idPerson).then((value) {
-      if (value != null) {
-        _listPayment = value;
+    if(statusValue != e.academicYearId){
+      _isLoading = true;
+      setState(() {});
+      statusValue = e.academicYearId;
+      _paymentService.getPayment(e.academicYearId, _prefs.idPerson).then((value) {
+        if (value != null) {
+          _listPayment = value;
+          _isLoading = false;
+          dataDistribution();
+          setState(() {});
+          return;
+        }
         _isLoading = false;
-        dataDistribution();
         setState(() {});
         return;
-      }
-      _isLoading = false;
-      setState(() {});
-      return;
-    });
+      });
+    }
   }
 
   dataDistribution() {

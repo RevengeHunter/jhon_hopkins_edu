@@ -1,55 +1,47 @@
 class ScoreModel {
   ScoreModel({
-    required this.blockId,
-    this.bLockParentId,
-    required this.blockName,
-    required this.percent,
-    this.blockChildren,
-    this.indicators,
+    required this.academicYearId,
+    required this.personId,
+    required this.personName,
+    required this.bimesterId,
+    required this.bimesterName,
+    required this.courseId,
+    required this.courseName,
+    required this.levelId,
+    required this.consolidationScoreValue,
   });
 
-  int blockId;
-  int? bLockParentId;
-  String blockName;
-  double percent;
-  List<ScoreModel>? blockChildren;
-  List<Indicator>? indicators;
+  int academicYearId;
+  int personId;
+  String personName;
+  int bimesterId;
+  String bimesterName;
+  int courseId;
+  String courseName;
+  int levelId;
+  double consolidationScoreValue;
 
   factory ScoreModel.fromJson(Map<String, dynamic> json) => ScoreModel(
-    blockId: json["BlockId"],
-    bLockParentId: json["BLockParentId"] == null ? null : json["BLockParentId"],
-    blockName: json["BlockName"],
-    percent: json["Percent"].toDouble(),
-    blockChildren: json["BlockChildren"] == null ? null : List<ScoreModel>.from(json["BlockChildren"].map((x) => ScoreModel.fromJson(x))),
-    indicators: json["Indicators"] == null ? null : List<Indicator>.from(json["Indicators"].map((x) => Indicator.fromJson(x))),
+    academicYearId: json["academicYearId"],
+    personId: json["personId"],
+    personName: json["personName"],
+    bimesterId: json["bimesterId"],
+    bimesterName: json["bimesterName"],
+    courseId: json["courseId"],
+    courseName: json["courseName"],
+    levelId: json["levelId"],
+    consolidationScoreValue: json["consolidationScoreValue"],
   );
 
   Map<String, dynamic> toJson() => {
-    "BlockId": blockId,
-    "BLockParentId": bLockParentId == null ? null : bLockParentId,
-    "BlockName": blockName,
-    "Percent": percent,
-    "BlockChildren": blockChildren == null ? null : List<dynamic>.from(blockChildren?.map((x) => x.toJson()) ?? []),
-    "Indicators": indicators == null ? null : List<dynamic>.from(indicators?.map((x) => x.toJson()) ?? []),
-  };
-}
-
-class Indicator {
-  Indicator({
-    required this.indicatorId,
-    required this.indicatorName,
-  });
-
-  int indicatorId;
-  String indicatorName;
-
-  factory Indicator.fromJson(Map<String, dynamic> json) => Indicator(
-    indicatorId: json["IndicatorId"],
-    indicatorName: json["IndicatorName"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "IndicatorId": indicatorId,
-    "IndicatorName": indicatorName,
+    "academicYearId": academicYearId,
+    "personId": personId,
+    "personName": personName,
+    "bimesterId": bimesterId,
+    "bimesterName": bimesterName,
+    "courseId": courseId,
+    "courseName": courseName,
+    "levelId": levelId,
+    "consolidationScoreValue": consolidationScoreValue,
   };
 }
