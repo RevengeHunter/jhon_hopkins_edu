@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/score_model.dart';
+import 'package:jhon_hopkins_edu/dominio/Services/Enrollment/enrollment_service.dart';
 import 'package:jhon_hopkins_edu/dominio/Services/Score/score_service.dart';
 import '../../../../../dominio/Models/academic_year_model.dart';
+import '../../../../../dominio/Models/enrollment_with_course_model.dart';
 import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/space_between.dart';
 import '../../../Shared/GeneralWidgets/loading_widget.dart';
+import 'ScoreCardInformation/score_card_information_widget.dart';
 
 class StudentRecordPage extends StatefulWidget {
   @override
@@ -14,7 +17,9 @@ class StudentRecordPage extends StatefulWidget {
 
 class _StudentRecordPageState extends State<StudentRecordPage> {
   final ScoreService _scoreService = ScoreService();
+  final EnrollmentService _enrollmentService = EnrollmentService();
   List<ScoreModel> _scoreModelList = [];
+  List<EnrollmentWithCourseModel> _enrollmentWithCourseModelList = [];
 
   @override
   void initState() {
@@ -35,6 +40,7 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       _isLoading = true;
       setState(() {});
       statusValue = e.academicYearId;
+
       _scoreService.getConsolidationScore(e.academicYearId).then((value) {
         if (value != null) {
           _scoreModelList = value;
@@ -46,6 +52,17 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
         setState(() {});
         return;
       });
+
+      _enrollmentService
+          .getEnrollmentWithCourseByAcademicPeriod(e.academicYearId)
+          .then((value) {
+        if (value != null) {
+          _enrollmentWithCourseModelList = value;
+          return;
+        }
+        return;
+      });
+
     }
   }
 
@@ -111,19 +128,16 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
                     ),
                     divider20,
                     !_isLoading
-                        ? Container(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text("Hola"),
-                                    ),
-                                  ],
-                                ),
-                                divider12,
-                              ],
-                            ),
+                        ? Column(
+                            children: _enrollmentWithCourseModelList
+                                .map(
+                                  (e) => ScoreCardInformationWidget(
+                                    courseName: e.courseName,
+                                    idAcademicYear: statusValue,
+                                    scoreConsolidationCourseList: _scoreModelList.where((element) => element.courseId == e.courseId).toList(),
+                                  ),
+                                )
+                                .toList(),
                           )
                         : SizedBox(
                             height: height * 0.7,
