@@ -52,8 +52,10 @@ class _StudentMainPageState extends State<StudentMainPage> {
     GoogleSignInAuthentication _googleSignInAuth =
         await _googleSignInAccount.authentication;
 
+    // UserModel? userModel = await authenticationLoginService
+    //     .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
     UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
+        .getExternalAuthenticate(_prefs.email);
 
     if (userModel == null) return;
 

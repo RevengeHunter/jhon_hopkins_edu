@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/bimester_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/score_model.dart';
@@ -28,45 +27,38 @@ class _ScoreCardInformationWidgetState
   final BimesterService _bimesterService = BimesterService();
   List<BimesterModel> _bimesterModelList = [];
   List<ScoreModel> scoreConsolidationCourseListAux = [];
-  List<Map<String,dynamic>> bimesterScoreList = [];
+  List<Map<String, dynamic>> bimesterScoreList = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getBimesters();
   }
 
   void getBimesters() async {
     _bimesterModelList =
-    await _bimesterService.getAllBimesters(widget.idAcademicYear);
+        await _bimesterService.getAllBimesters(widget.idAcademicYear);
 
-    _bimesterModelList.forEach((element) {
-      Map<String,dynamic> bimesterScore = {};
-      bimesterScore["bimester"]=element.name;
-      if(widget
-          .scoreConsolidationCourseList
-          .where((i) => i.bimesterId == element.bimesterId)
-          .toList().length == 1){
-        bimesterScore["score"]=widget
-            .scoreConsolidationCourseList
+    for (var element in _bimesterModelList) {
+      Map<String, dynamic> bimesterScore = {};
+      bimesterScore["bimester"] = element.name;
+      if (widget.scoreConsolidationCourseList
+              .where((i) => i.bimesterId == element.bimesterId)
+              .toList()
+              .length ==
+          1) {
+        bimesterScore["score"] = widget.scoreConsolidationCourseList
             .where((i) => i.bimesterId == element.bimesterId)
-            .toList().first.consolidationScoreValue;
-      }else{
-        bimesterScore["score"]="-";
+            .toList()
+            .first
+            .consolidationScoreValue;
+      } else {
+        bimesterScore["score"] = "-";
       }
       bimesterScoreList.add(bimesterScore);
-    });
-    print(bimesterScoreList);
-    // _bimesterModelList.forEach((element) {
-    //   ScoreModel scoreConsolidationCourseAux = widget
-    //       .scoreConsolidationCourseList
-    //       .where((i) => i.bimesterId == element.bimesterId)
-    //       .toList()
-    //       .first;
-    //   scoreConsolidationCourseListAux.add(scoreConsolidationCourseAux);
-    // });
+    }
 
+    setState(() {});
   }
 
   @override
@@ -82,7 +74,7 @@ class _ScoreCardInformationWidgetState
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 5,
-            offset: Offset(4, 4),
+            offset: const Offset(4, 4),
           ),
         ],
       ),
@@ -114,12 +106,12 @@ class _ScoreCardInformationWidgetState
             ),
           ),
           divider3,
-          Divider(),
+          const Divider(),
           divider3,
           GridView.builder(
             itemCount: _bimesterModelList.length,
             shrinkWrap: true,
-            physics: ScrollPhysics(),
+            physics: const ScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 18.0,
@@ -128,13 +120,13 @@ class _ScoreCardInformationWidgetState
             ),
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                padding: EdgeInsets.all(2.5),
+                padding: const EdgeInsets.all(2.5),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.03),
                       blurRadius: 5,
-                      offset: Offset(4, 4),
+                      offset: const Offset(4, 4),
                     ),
                   ],
                 ),
@@ -149,7 +141,7 @@ class _ScoreCardInformationWidgetState
                     ),
                     Text(
                       bimesterScoreList[index]['score'].toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: kBrandPrimaryColor,
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,

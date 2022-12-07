@@ -62,13 +62,13 @@ class _LoginPageState extends State<LoginPage> {
 
     _prefs.idPerson = userModel.personId!;
     _prefs.documentNumber = userModel.documentNumber;
-    _prefs.fullName = _googleSignInAccount.displayName!;
-    _prefs.image = _googleSignInAccount.photoUrl!;
     _prefs.role = userModel.roles.first;
-    _prefs.email = _googleSignInAccount.email;
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
     _prefs.idToken = _googleSignInAuth.idToken!;
+    _prefs.email = _googleSignInAccount.email;
+    _prefs.fullName = _googleSignInAccount.displayName!;
+    _prefs.image = _googleSignInAccount.photoUrl!;
 
     _academicYearListGlobal.createAcademicYearList();
     await _currentEnrollmentGlobal.createCurrentEnrollment();

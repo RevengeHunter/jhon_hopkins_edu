@@ -42,7 +42,8 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       statusValue = e.academicYearId;
 
       _scoreService.getConsolidationScore(e.academicYearId).then((value) {
-        if (value != null) {
+        print(value);
+        if (value.isNotEmpty) {
           _scoreModelList = value;
           _isLoading = false;
           setState(() {});
@@ -56,13 +57,14 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       _enrollmentService
           .getEnrollmentWithCourseByAcademicPeriod(e.academicYearId)
           .then((value) {
-        if (value != null) {
+        if (value.isNotEmpty) {
           _enrollmentWithCourseModelList = value;
+          setState(() {});
           return;
         }
+        setState(() {});
         return;
       });
-
     }
   }
 
@@ -134,7 +136,11 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
                                   (e) => ScoreCardInformationWidget(
                                     courseName: e.courseName,
                                     idAcademicYear: statusValue,
-                                    scoreConsolidationCourseList: _scoreModelList.where((element) => element.courseId == e.courseId).toList(),
+                                    scoreConsolidationCourseList:
+                                        _scoreModelList
+                                            .where((element) =>
+                                                element.courseId == e.courseId)
+                                            .toList(),
                                   ),
                                 )
                                 .toList(),
