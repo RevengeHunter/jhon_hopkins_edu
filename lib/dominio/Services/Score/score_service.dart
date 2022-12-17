@@ -17,9 +17,7 @@ class ScoreService {
         'Authorization': 'bearer ${_prefs.jwt}',
       },
     );
-    print(idAcademicYear);
-    print(_prefs.jwt);
-    print(response.body);
+
     if (response.statusCode == 200) {
       Map<String, dynamic> myMap = jsonDecode(response.body);
       List myList = myMap["data"];
