@@ -46,6 +46,7 @@ class EnrollmentService {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> myMap = jsonDecode(response.body);
+      if(!myMap["succeeded"]) return null;
       EnrollmentCurrentModel enrollmentCurrentModel =
           EnrollmentCurrentModel.fromJson(myMap["data"]);
       return enrollmentCurrentModel;

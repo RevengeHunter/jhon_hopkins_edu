@@ -42,7 +42,7 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       statusValue = e.academicYearId;
 
       _scoreService.getConsolidationScore(e.academicYearId).then((value) {
-        print(value);
+
         if (value.isNotEmpty) {
           _scoreModelList = value;
           _isLoading = false;
@@ -57,6 +57,7 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       _enrollmentService
           .getEnrollmentWithCourseByAcademicPeriod(e.academicYearId)
           .then((value) {
+
         if (value.isNotEmpty) {
           _enrollmentWithCourseModelList = value;
           setState(() {});

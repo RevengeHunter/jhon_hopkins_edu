@@ -30,7 +30,7 @@ class ScoreModel {
     courseId: json["courseId"],
     courseName: json["courseName"],
     levelId: json["levelId"],
-    consolidationScoreValue: json["consolidationScoreValue"],
+    consolidationScoreValue: double.parse(json["consolidationScoreValue"].toString()),
   );
 
   Map<String, dynamic> toJson() => {

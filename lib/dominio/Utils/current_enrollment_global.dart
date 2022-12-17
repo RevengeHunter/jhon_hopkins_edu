@@ -16,10 +16,11 @@ class CurrentEnrollmentGlobal {
   final EnrollmentService _enrollmentService = EnrollmentService();
   late EnrollmentCurrentModel _enrollmentCurrentModel;
 
-  Future<EnrollmentCurrentModel> createCurrentEnrollment() async {
+  Future<EnrollmentCurrentModel?> createCurrentEnrollment() async {
     EnrollmentCurrentModel? enrollmentCurrentModel = await _enrollmentService.getCurrentEnrollmentByStudent();
+    if(enrollmentCurrentModel==null) return null;
     _enrollmentCurrentModel = EnrollmentCurrentModel(
-      id: enrollmentCurrentModel!.id,
+      id: enrollmentCurrentModel.id,
       personId: enrollmentCurrentModel.personId,
       sectionId: enrollmentCurrentModel.sectionId,
       sectionName: enrollmentCurrentModel.sectionName,

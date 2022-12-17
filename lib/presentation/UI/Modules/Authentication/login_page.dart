@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/user_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Services/Authentication/authentication_login_service.dart';
 import 'package:jhon_hopkins_edu/dominio/Utils/current_enrollment_global.dart';
@@ -18,7 +18,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
+  //final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
 
   final AuthenticationLoginService authenticationLoginService =
       AuthenticationLoginService();
@@ -34,25 +34,26 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _textEditingController = TextEditingController();
 
   void _loginWithGoogle() async {
-    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+    // GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
 
     _isLoading = true;
     setState(() {});
 
-    if (_googleSignInAccount == null) {
-      _isLoading = false;
-      setState(() {});
-      return;
-    }
+    // if (_googleSignInAccount == null) {
+    //   _isLoading = false;
+    //   setState(() {});
+    //   return;
+    // }
 
-    GoogleSignInAuthentication _googleSignInAuth =
-        await _googleSignInAccount.authentication;
+    // GoogleSignInAuthentication _googleSignInAuth =
+    //     await _googleSignInAccount.authentication;
 
     // UserModel? userModel = await authenticationLoginService
     //     .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
 
+    /*Comentar si se pasa a prod*/
     UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_textEditingController.text);
+       .getExternalAuthenticate(_textEditingController.text);
 
     if (userModel == null) {
       _isLoading = false;
@@ -65,10 +66,10 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.role = userModel.roles.first;
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
-    _prefs.idToken = _googleSignInAuth.idToken!;
-    _prefs.email = _googleSignInAccount.email;
-    _prefs.fullName = _googleSignInAccount.displayName!;
-    _prefs.image = _googleSignInAccount.photoUrl!;
+    //_prefs.idToken = _googleSignInAuth.idToken!;
+    _prefs.email = _textEditingController.text;//_googleSignInAccount.email;
+    _prefs.fullName = userModel.userName;//_googleSignInAccount.displayName!;
+    _prefs.image = "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";//_googleSignInAccount.photoUrl!;
 
     _academicYearListGlobal.createAcademicYearList();
     await _currentEnrollmentGlobal.createCurrentEnrollment();
