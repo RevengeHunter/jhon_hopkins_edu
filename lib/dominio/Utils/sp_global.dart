@@ -29,10 +29,10 @@ class SPGlobal{
   }
   String get jwt => _prefs.getString('jwt')??"";
 
-  set idToken(String value){
-    _prefs.setString("idToken", value);
-  }
-  String get idToken => _prefs.getString('idToken')??"";
+  // set idToken(String value){
+  //   _prefs.setString("idToken", value);
+  // }
+  // String get idToken => _prefs.getString('idToken')??"";
 
   set fullName(String value){
     _prefs.setString("fullName", value);

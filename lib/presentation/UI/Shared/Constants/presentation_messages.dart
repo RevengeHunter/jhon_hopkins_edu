@@ -11,4 +11,7 @@ Map<int, String> presentation_messages = {
   10: "Recuerda que debes tener breves descansos.",
   11: "¡Mantente al día con tus pagos!",
   12: "Por tu seguridad, no compartas tu contraseña.",
+  13: "Hay más en la vida que ir a la universidad.",
+  14: "Explora todas las opciones antes de decidirte por una.",
+  15: "Recuerda decidirte por un trabajo que te haga feliz por que estarás en ella gran parte de tu vida.",
 };

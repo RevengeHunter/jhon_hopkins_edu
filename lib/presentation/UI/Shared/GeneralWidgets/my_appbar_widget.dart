@@ -81,7 +81,6 @@ class MyAppBarWidget extends StatelessWidget {
                   _prefs.gradeName = "";
                   _prefs.isLogin = false;
                   _prefs.jwt = "";
-                  _prefs.idToken = "";
 
                   _googleSignIn.signOut();
 

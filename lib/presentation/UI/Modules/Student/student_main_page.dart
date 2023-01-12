@@ -45,22 +45,17 @@ class _StudentMainPageState extends State<StudentMainPage> {
   int _currentPage = 0;
 
   reGoogleSignIn() async {
-    //GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
 
-    //if (_googleSignInAccount == null) return;
+    if (_googleSignInAccount == null) return;
 
-    //GoogleSignInAuthentication _googleSignInAuth =
-        //await _googleSignInAccount.authentication;
-
-    // UserModel? userModel = await authenticationLoginService
-    //     .getExternalAuthenticate(_googleSignInAuth.idToken ?? "");
     UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_prefs.email);
+        .getExternalAuthenticate(_googleSignInAccount.email);
 
     if (userModel == null) return;
+    if (!userModel.roles.contains('Student')) return;
 
     _prefs.jwt = userModel.jwtToken;
-    //_prefs.idToken = _googleSignInAuth.idToken!;
 
     await _currentEnrollmentGlobal.createCurrentEnrollment();
     await _academicYearListGlobal.createAcademicYearList();
