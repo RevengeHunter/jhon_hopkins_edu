@@ -8,6 +8,7 @@ import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../../../dominio/Utils/sp_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/space_between.dart';
+import '../../../Shared/GeneralWidgets/not_found_widget.dart';
 import 'AttendanceCardInformation/attendance_card_information_widget.dart';
 
 class StudentAttendancePage extends StatefulWidget {
@@ -25,6 +26,9 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
 
   int statusValue = 0;
   bool _isLoading = false;
+  double height = 0.0;
+  double width = 0.0;
+  Widget responseWidget = SizedBox();
 
   List<AttendanceModel> _attendanceList = [];
 
@@ -38,10 +42,27 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
           .then((value) {
         if (value != null) {
           _attendanceList = value;
+
+          responseWidget = Column(
+            children: _attendanceList
+                .map(
+                  (e) => AttendanceCardInformationWidget(attendanceModel: e),
+                )
+                .toList(),
+          );
+
           _isLoading = false;
           setState(() {});
           return;
         }
+
+        responseWidget = NotFoundWidget(
+          message:
+              "Aún no se tiene las asistencias del curso para el año académico seleccionado.",
+          alto: height,
+          ancho: width,
+        );
+
         _isLoading = false;
         setState(() {});
         return;
@@ -60,38 +81,49 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
           children: [
             //BackgroundLogoWidget(),
             SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               //clipBehavior: Clip.none,
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     divider12,
                     const Text(
                       "Mi asistencia",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.w700,
                         color: kBrandPrimaryColor,
                       ),
+                    ),
+                    divider3,
+                    const Text(
+                      "Elige un periodo académico para realizar la consulta.",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: kBrandPrimaryColor,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     divider3,
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Periodo académico:",
-                        ),
-                        dividerWidth20,
                         Wrap(
                           children: _academicYearListGlobal.getAcademicYearList
                               .map(
                                 (e) => FilterChip(
                                   selected: statusValue == e.academicYearId,
                                   selectedColor: statusColor["Selected"],
-                                  label: Text(e.academicYearName),
+                                  padding: const EdgeInsets.all(2),
+                                  label: Text(
+                                    e.academicYearName,
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
                                   labelStyle: TextStyle(
                                     color: statusValue == e.academicYearId
                                         ? Colors.white
@@ -110,16 +142,9 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
                         ),
                       ],
                     ),
-                    divider12,
+                    divider20,
                     !_isLoading
-                        ? Column(
-                                children: _attendanceList
-                                    .map(
-                                      (e) => AttendanceCardInformationWidget(
-                                          attendanceModel: e),
-                                    )
-                                    .toList(),
-                              )
+                        ? responseWidget
                         : SizedBox(
                             height: height * 0.7,
                             width: width,

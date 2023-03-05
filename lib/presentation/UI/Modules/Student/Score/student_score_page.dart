@@ -8,6 +8,7 @@ import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/space_between.dart';
 import '../../../Shared/GeneralWidgets/loading_widget.dart';
+import '../../../Shared/GeneralWidgets/not_found_widget.dart';
 import 'ScoreCardInformation/score_card_information_widget.dart';
 
 class StudentRecordPage extends StatefulWidget {
@@ -20,6 +21,8 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
   final EnrollmentService _enrollmentService = EnrollmentService();
   List<ScoreModel> _scoreModelList = [];
   List<EnrollmentWithCourseModel> _enrollmentWithCourseModelList = [];
+
+  Widget responseWidget = Column();
 
   @override
   void initState() {
@@ -34,6 +37,8 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
 
   int statusValue = 0;
   bool _isLoading = false;
+  double height = 0.0;
+  double width = 0.0;
 
   academicYearSelected(AcademicYearModel e) {
     if (statusValue != e.academicYearId) {
@@ -42,7 +47,6 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       statusValue = e.academicYearId;
 
       _scoreService.getConsolidationScore(e.academicYearId).then((value) {
-
         if (value.isNotEmpty) {
           _scoreModelList = value;
           _isLoading = false;
@@ -57,12 +61,33 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       _enrollmentService
           .getEnrollmentWithCourseByAcademicPeriod(e.academicYearId)
           .then((value) {
-
         if (value.isNotEmpty) {
           _enrollmentWithCourseModelList = value;
+
+          responseWidget = Column(
+            children: _enrollmentWithCourseModelList
+                .map(
+                  (e) => ScoreCardInformationWidget(
+                    courseName: e.courseName,
+                    idAcademicYear: statusValue,
+                    scoreConsolidationCourseList: _scoreModelList
+                        .where((element) => element.courseId == e.courseId)
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          );
+
           setState(() {});
           return;
         }
+
+        responseWidget = NotFoundWidget(
+          message:
+              "Aún no se tiene las notas del bimestre para el año académico seleccionado.",
+          alto: height,
+          ancho: width,
+        );
         setState(() {});
         return;
       });
@@ -71,8 +96,8 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: SafeArea(
@@ -84,33 +109,44 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     divider12,
                     const Text(
                       "Mis notas",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.w700,
                         color: kBrandPrimaryColor,
                       ),
+                    ),
+                    divider3,
+                    const Text(
+                      "Elige un periodo académico para realizar la consulta.",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: kBrandPrimaryColor,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     divider3,
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Periodo académico:",
-                        ),
-                        dividerWidth20,
                         Wrap(
                           children: _academicYearListGlobal.getAcademicYearList
                               .map(
                                 (e) => FilterChip(
                                   selected: statusValue == e.academicYearId,
                                   selectedColor: statusColor["Selected"],
-                                  label: Text(e.academicYearName),
+                                  padding: const EdgeInsets.all(2),
+                                  label: Text(
+                                    e.academicYearName,
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
                                   labelStyle: TextStyle(
                                     color: statusValue == e.academicYearId
                                         ? Colors.white
@@ -131,21 +167,7 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
                     ),
                     divider20,
                     !_isLoading
-                        ? Column(
-                            children: _enrollmentWithCourseModelList
-                                .map(
-                                  (e) => ScoreCardInformationWidget(
-                                    courseName: e.courseName,
-                                    idAcademicYear: statusValue,
-                                    scoreConsolidationCourseList:
-                                        _scoreModelList
-                                            .where((element) =>
-                                                element.courseId == e.courseId)
-                                            .toList(),
-                                  ),
-                                )
-                                .toList(),
-                          )
+                        ? responseWidget
                         : SizedBox(
                             height: height * 0.7,
                             width: width,

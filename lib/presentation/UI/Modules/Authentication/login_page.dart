@@ -7,6 +7,8 @@ import 'package:jhon_hopkins_edu/dominio/Utils/sp_global.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Modules/Student/student_main_page.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
 import 'package:jhon_hopkins_edu/Presentation/UI/Shared/Constants/space_between.dart';
+import '../../../../dominio/Models/person_model.dart';
+import '../../../../dominio/Services/Person/person_service.dart';
 import '../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../Shared/GeneralWidgets/loading_widget.dart';
 
@@ -18,8 +20,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
-
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
+  //
   final AuthenticationLoginService authenticationLoginService =
       AuthenticationLoginService();
 
@@ -28,29 +30,30 @@ class _LoginPageState extends State<LoginPage> {
       AcademicYearListGlobal();
   final CurrentEnrollmentGlobal _currentEnrollmentGlobal =
       CurrentEnrollmentGlobal();
+  final PersonService _personService = PersonService();
 
   bool _isLoading = false;
 
-  //final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
 
   void _loginWithGoogle() async {
-    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+    // GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
 
     _isLoading = true;
     setState(() {});
 
-    if (_googleSignInAccount == null) {
-      _isLoading = false;
-      setState(() {});
-      return;
-    }
+    // if (_googleSignInAccount == null) {
+    //   _isLoading = false;
+    //   setState(() {});
+    //   return;
+    // }
 
-    UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_googleSignInAccount.email);
+    // UserModel? userModel = await authenticationLoginService
+    //     .getExternalAuthenticate(_googleSignInAccount.email);
 
     /*Comentar si se pasa a prod*/
-    // UserModel? userModel = await authenticationLoginService
-    //    .getExternalAuthenticate(_textEditingController.text);
+    UserModel? userModel = await authenticationLoginService
+       .getExternalAuthenticate(_textEditingController.text);
 
     if (userModel == null) {
       _isLoading = false;
@@ -63,9 +66,18 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.role = userModel.roles.first;
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
-    _prefs.email = _googleSignInAccount.email;
-    _prefs.fullName = _googleSignInAccount.displayName!;//userModel.userName;
-    _prefs.image = _googleSignInAccount.photoUrl!;//"https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
+    _prefs.email = _textEditingController.text;
+    _prefs.image = "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
+    // _prefs.email = _googleSignInAccount.email;//_textEditingController.text;
+    // _prefs.image = _googleSignInAccount.photoUrl!;//"https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
+
+    PersonModel? personModel = await _personService.getPerson();
+    if (personModel == null){
+      _isLoading = false;
+      setState(() {});
+      return;
+    }
+    _prefs.fullName = '${personModel.firstName} ${personModel.paternalSurname} ${personModel.maternalSurname}';
 
     _academicYearListGlobal.createAcademicYearList();
     await _currentEnrollmentGlobal.createCurrentEnrollment();
@@ -126,13 +138,13 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             divider20,
-                            // TextField(
-                            //   controller: _textEditingController,
-                            //   decoration: const InputDecoration(
-                            //       hintText: "Correo electronico"),
-                            //   maxLines: 1,
-                            // ),
-                            // divider20,
+                            TextField(
+                              controller: _textEditingController,
+                              decoration: const InputDecoration(
+                                  hintText: "Correo electronico"),
+                              maxLines: 1,
+                            ),
+                            divider20,
                             ElevatedButton(
                               onPressed: () {
                                 _loginWithGoogle();

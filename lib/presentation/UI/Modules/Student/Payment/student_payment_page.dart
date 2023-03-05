@@ -32,11 +32,13 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
   bool debts = true;
 
   academicYearSelected(AcademicYearModel e) {
-    if(statusValue != e.academicYearId){
+    if (statusValue != e.academicYearId) {
       _isLoading = true;
       setState(() {});
       statusValue = e.academicYearId;
-      _paymentService.getPayment(e.academicYearId, _prefs.idPerson).then((value) {
+      _paymentService
+          .getPayment(e.academicYearId, _prefs.idPerson)
+          .then((value) {
         if (value != null) {
           _listPayment = value;
           _isLoading = false;
@@ -93,33 +95,44 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     divider12,
                     const Text(
                       "Mis deudas",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.w700,
                         color: kBrandPrimaryColor,
                       ),
+                    ),
+                    divider3,
+                    const Text(
+                      "Elige un periodo académico para realizar la consulta.",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: kBrandPrimaryColor,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     divider3,
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Periodo académico:",
-                        ),
-                        dividerWidth20,
                         Wrap(
                           children: _academicYearListGlobal.getAcademicYearList
                               .map(
                                 (e) => FilterChip(
                                   selected: statusValue == e.academicYearId,
                                   selectedColor: statusColor["Selected"],
-                                  label: Text(e.academicYearName),
+                                  padding: const EdgeInsets.all(2),
+                                  label: Text(
+                                    e.academicYearName,
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
                                   labelStyle: TextStyle(
                                     color: statusValue == e.academicYearId
                                         ? Colors.white
@@ -166,6 +179,9 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                                               ),
                                               child: const Text(
                                                 "Deudas",
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -186,6 +202,9 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                                               ),
                                               child: const Text(
                                                 "Pagos",
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                ),
                                               ),
                                             ),
                                           ),

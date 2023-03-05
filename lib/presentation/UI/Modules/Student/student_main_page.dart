@@ -69,11 +69,11 @@ class _StudentMainPageState extends State<StudentMainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (_googleSignIn.currentUser == null) {
-      reGoogleSignIn();
-    } else {
+    // if (_googleSignIn.currentUser == null) {
+    //   reGoogleSignIn();
+    // } else {
       getGlobals();
-    }
+    //}
   }
 
   @override
@@ -89,7 +89,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
       body: _pages[_currentPage],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: TextStyle(
+        selectedLabelStyle: const TextStyle(
           fontSize: 13.0,
         ),
         selectedFontSize: 13.0,
@@ -108,7 +108,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
               color:
               _currentPage == 0 ? kBrandPrimaryColor : kBrandSecondaryColor,
             ),
-            label: "Intro",
+            label: "Inicio",
           ),
           BottomNavigationBarItem(
             icon: Icon(

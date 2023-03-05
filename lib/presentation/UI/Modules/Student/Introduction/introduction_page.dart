@@ -45,7 +45,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
             padding:
                 const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.7),
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Column(
@@ -64,7 +63,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   ),
                 ),
                 Text(
-                  _shared.fullName.toLowerCase(),
+                  _shared.fullName.toUpperCase(),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,

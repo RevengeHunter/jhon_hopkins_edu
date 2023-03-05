@@ -13,10 +13,12 @@ class AttendanceAbsentDetailPage extends StatefulWidget {
   });
 
   @override
-  State<AttendanceAbsentDetailPage> createState() => _AttendanceAbsentDetailPageState();
+  State<AttendanceAbsentDetailPage> createState() =>
+      _AttendanceAbsentDetailPageState();
 }
 
-class _AttendanceAbsentDetailPageState extends State<AttendanceAbsentDetailPage> {
+class _AttendanceAbsentDetailPageState
+    extends State<AttendanceAbsentDetailPage> {
   final SPGlobal _spGlobal = SPGlobal();
   List<Detail> atendance = [];
 
@@ -27,9 +29,10 @@ class _AttendanceAbsentDetailPageState extends State<AttendanceAbsentDetailPage>
     getDetail();
   }
 
-  getDetail(){
+  getDetail() {
     List<Detail> atendanceAux = widget.attendanceModel.details ?? [];
-    atendance = atendanceAux.where((element) => element.assistanceType == 2).toList();
+    atendance =
+        atendanceAux.where((element) => element.assistanceType == 2).toList();
   }
 
   @override
@@ -67,10 +70,10 @@ class _AttendanceAbsentDetailPageState extends State<AttendanceAbsentDetailPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Mis Inasistencias",
+                  "Estos son los días que no asististe a clases. Recuerda lo importante que es estar presente para aprender y divertirte.",
                   style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
                     color: kBrandPrimaryColor,
                   ),
                 ),
@@ -102,10 +105,16 @@ class _AttendanceAbsentDetailPageState extends State<AttendanceAbsentDetailPage>
                           scale: 12,
                         ),
                         title: Text(
-                            DateFormat('EEEE','es').format(atendance[index].assistanceDate!).toString(),
+                          DateFormat('EEEE', 'es')
+                              .format(atendance[index].assistanceDate!)
+                              .toString(),
                         ),
                         subtitle: Text(
-                          atendance[index].assistanceDate!.toLocal().toString().substring(0,10),
+                          atendance[index]
+                              .assistanceDate!
+                              .toLocal()
+                              .toString()
+                              .substring(0, 10),
                         ),
                       ),
                     );
