@@ -7,7 +7,9 @@ import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/space_between.dart';
 
 import '../../../../../dominio/Models/academic_year_model.dart';
+import '../../../Shared/Constants/font.dart';
 import '../../../Shared/GeneralWidgets/loading_widget.dart';
+import '../../../Shared/GeneralWidgets/not_found_widget.dart';
 import 'PaymentCardInformation/payment_card_information_widget.dart';
 
 class StudentPaymentPage extends StatefulWidget {
@@ -26,30 +28,25 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
   final List<PaymentModel> _listPaymentAux = [];
 
   AcademicYearModel? _academicYearModel;
+  Widget responseWidget = Column();
+  Widget responseReloadWidget = const SizedBox();
 
-  int statusValue = 0;
+  int academicYearId = 0;
   bool _isLoading = false;
   bool debts = true;
+  double height = 0.0;
+  double width = 0.0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   academicYearSelected(AcademicYearModel e) {
-    if (statusValue != e.academicYearId) {
-      _isLoading = true;
-      setState(() {});
-      statusValue = e.academicYearId;
-      _paymentService
-          .getPayment(e.academicYearId, _prefs.idPerson)
-          .then((value) {
-        if (value != null) {
-          _listPayment = value;
-          _isLoading = false;
-          dataDistribution();
-          setState(() {});
-          return;
-        }
-        _isLoading = false;
-        setState(() {});
-        return;
-      });
+    if (academicYearId != e.academicYearId) {
+      academicYearId = e.academicYearId;
+      loadInformation();
     }
   }
 
@@ -62,7 +59,115 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
         _listPaymentAux.add(element);
       }
     });
+
+    responseWidget = Column(
+      children: [
+        _listPayment.isNotEmpty
+            ? Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (!debts) {
+                          debts = true;
+                          dataDistribution();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary:
+                            debts ? kBrandPrimaryColor : kBrandSecondaryColor,
+                      ),
+                      child: const Text(
+                        "Deudas",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  dividerWidth10,
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (debts) {
+                          debts = false;
+                          dataDistribution();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        primary:
+                            !debts ? kBrandPrimaryColor : kBrandSecondaryColor,
+                      ),
+                      child: const Text(
+                        "Pagos",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : const SizedBox(),
+        divider12,
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const ScrollPhysics(),
+          itemCount: _listPaymentAux.length,
+          itemBuilder: (BuildContext context, int index) {
+            return PaymentCardInformationWidget(
+              paymentModel: _listPaymentAux[index],
+            );
+          },
+        ),
+      ],
+    );
+
+    responseReloadWidget = FloatingActionButton(
+      elevation: 3.5,
+      child: const Icon(
+        Icons.refresh,
+        size: 38.8,
+      ),
+      backgroundColor: kBrandPrimaryColor,
+      onPressed: () {
+        if (_academicYearModel != null) {
+          loadInformation();
+          setState(() {});
+        }
+      },
+    );
+
     setState(() {});
+  }
+
+  loadInformation() {
+    _isLoading = true;
+    setState(() {});
+
+    _paymentService.getPayment(academicYearId, _prefs.idPerson).then((value) {
+      if (value != null) {
+        _listPayment = value;
+        _isLoading = false;
+        dataDistribution();
+
+        setState(() {});
+        return;
+      }
+
+      responseWidget = NotFoundWidget(
+        message:
+            "No tiene pagos por realizar en el año académico seleccionado.",
+        alto: height,
+        ancho: width,
+      );
+
+      _isLoading = false;
+      setState(() {});
+      return;
+    });
   }
 
   @override
@@ -71,20 +176,7 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        elevation: 3.5,
-        child: const Icon(
-          Icons.refresh,
-          size: 38.8,
-        ),
-        backgroundColor: kBrandPrimaryColor,
-        onPressed: () {
-          if (_academicYearModel != null) {
-            academicYearSelected(_academicYearModel!);
-            setState(() {});
-          }
-        },
-      ),
+      floatingActionButton: responseReloadWidget,
       body: SafeArea(
         child: Stack(
           children: [
@@ -100,132 +192,68 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                     divider12,
                     const Text(
                       "Mis deudas",
-                      style: TextStyle(
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w700,
-                        color: kBrandPrimaryColor,
-                      ),
+                      style: titleTextStyle,
                     ),
                     divider3,
                     const Text(
                       "Elige un periodo académico para realizar la consulta.",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: kBrandPrimaryColor,
-                      ),
+                      style: subTitleTextStyle,
                       textAlign: TextAlign.center,
                     ),
-                    divider3,
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Wrap(
-                          children: _academicYearListGlobal.getAcademicYearList
-                              .map(
-                                (e) => FilterChip(
-                                  selected: statusValue == e.academicYearId,
-                                  selectedColor: statusColor["Selected"],
-                                  padding: const EdgeInsets.all(2),
-                                  label: Text(
-                                    e.academicYearName,
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                    ),
-                                  ),
-                                  labelStyle: TextStyle(
-                                    color: statusValue == e.academicYearId
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: statusValue == e.academicYearId
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
-                                  ),
-                                  checkmarkColor: Colors.white,
-                                  onSelected: (bool isSelected) {
-                                    academicYearSelected(e);
-                                    _academicYearModel = AcademicYearModel(
-                                      academicYearId: e.academicYearId,
-                                      academicYearName: e.academicYearName,
-                                    );
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ],
-                    ),
+                    divider12,
+                    _academicYearListGlobal
+                        .getAcademicYearList.isNotEmpty
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                children: _academicYearListGlobal
+                                    .getAcademicYearList
+                                    .map(
+                                      (e) => FilterChip(
+                                        selected:
+                                            academicYearId == e.academicYearId,
+                                        selectedColor: statusColor["Selected"],
+                                        padding: const EdgeInsets.all(2),
+                                        label: Text(
+                                          e.academicYearName,
+                                          style: chipTextStyle,
+                                        ),
+                                        labelStyle: TextStyle(
+                                          color:
+                                              academicYearId == e.academicYearId
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                          fontWeight:
+                                              academicYearId == e.academicYearId
+                                                  ? FontWeight.w600
+                                                  : FontWeight.normal,
+                                        ),
+                                        checkmarkColor: Colors.white,
+                                        onSelected: (bool isSelected) {
+                                          academicYearSelected(e);
+                                          _academicYearModel =
+                                              AcademicYearModel(
+                                            academicYearId: e.academicYearId,
+                                            academicYearName:
+                                                e.academicYearName,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          )
+                        : NotFoundWidget(
+                            message:
+                                "No se encontro ningún año académico en el que este matriculado",
+                            alto: height,
+                            ancho: width),
                     divider20,
                     !_isLoading
-                        ? Container(
-                            child: Column(
-                              children: [
-                                _listPayment.isNotEmpty
-                                    ? Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                if (!debts) {
-                                                  debts = true;
-                                                  dataDistribution();
-                                                }
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                elevation: 0,
-                                                primary: debts
-                                                    ? kBrandPrimaryColor
-                                                    : kBrandSecondaryColor,
-                                              ),
-                                              child: const Text(
-                                                "Deudas",
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          dividerWidth10,
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                if (debts) {
-                                                  debts = false;
-                                                  dataDistribution();
-                                                }
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                elevation: 0,
-                                                primary: !debts
-                                                    ? kBrandPrimaryColor
-                                                    : kBrandSecondaryColor,
-                                              ),
-                                              child: const Text(
-                                                "Pagos",
-                                                style: TextStyle(
-                                                  fontSize: 18.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : const SizedBox(),
-                                divider12,
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const ScrollPhysics(),
-                                  itemCount: _listPaymentAux.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return PaymentCardInformationWidget(
-                                      paymentModel: _listPaymentAux[index],
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          )
+                        ? responseWidget
                         : SizedBox(
                             height: height * 0.7,
                             width: width,

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/attendance_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Utils/sp_global.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
+import '../../../../Shared/Constants/font.dart';
 import '../../../../Shared/Constants/space_between.dart';
 
 class AttendanceAbsentDetailPage extends StatefulWidget {
@@ -71,11 +72,7 @@ class _AttendanceAbsentDetailPageState
               children: [
                 const Text(
                   "Estos son los días que no asististe a clases. Recuerda lo importante que es estar presente para aprender y divertirte.",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
-                    color: kBrandPrimaryColor,
-                  ),
+                  style: paragraphTextStyle,
                 ),
                 divider12,
                 ListView.builder(

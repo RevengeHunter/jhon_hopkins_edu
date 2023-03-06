@@ -7,6 +7,7 @@ import '../../../../../dominio/Models/attendance_model.dart';
 import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../../../dominio/Utils/sp_global.dart';
 import '../../../Shared/Constants/colors.dart';
+import '../../../Shared/Constants/font.dart';
 import '../../../Shared/Constants/space_between.dart';
 import '../../../Shared/GeneralWidgets/not_found_widget.dart';
 import 'AttendanceCardInformation/attendance_card_information_widget.dart';
@@ -58,7 +59,7 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
 
         responseWidget = NotFoundWidget(
           message:
-              "Aún no se tiene las asistencias del curso para el año académico seleccionado.",
+              "No tiene asistencias registradas en el año académico seleccionado.",
           alto: height,
           ancho: width,
         );
@@ -91,57 +92,57 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
                     divider12,
                     const Text(
                       "Mi asistencia",
-                      style: TextStyle(
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w700,
-                        color: kBrandPrimaryColor,
-                      ),
+                      style: titleTextStyle,
                     ),
                     divider3,
                     const Text(
                       "Elige un periodo académico para realizar la consulta.",
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: kBrandPrimaryColor,
-                      ),
+                      style: subTitleTextStyle,
                       textAlign: TextAlign.center,
                     ),
-                    divider3,
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Wrap(
-                          children: _academicYearListGlobal.getAcademicYearList
-                              .map(
-                                (e) => FilterChip(
-                                  selected: statusValue == e.academicYearId,
-                                  selectedColor: statusColor["Selected"],
-                                  padding: const EdgeInsets.all(2),
-                                  label: Text(
-                                    e.academicYearName,
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                    ),
-                                  ),
-                                  labelStyle: TextStyle(
-                                    color: statusValue == e.academicYearId
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: statusValue == e.academicYearId
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
-                                  ),
-                                  checkmarkColor: Colors.white,
-                                  onSelected: (bool isSelected) {
-                                    academicYearSelected(e);
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ],
-                    ),
+                    divider12,
+                    _academicYearListGlobal.getAcademicYearList.isNotEmpty
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                children: _academicYearListGlobal
+                                    .getAcademicYearList
+                                    .map(
+                                      (e) => FilterChip(
+                                        selected:
+                                            statusValue == e.academicYearId,
+                                        selectedColor: statusColor["Selected"],
+                                        padding: const EdgeInsets.all(2),
+                                        label: Text(
+                                          e.academicYearName,
+                                          style: chipTextStyle,
+                                        ),
+                                        labelStyle: TextStyle(
+                                          color: statusValue == e.academicYearId
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontWeight:
+                                              statusValue == e.academicYearId
+                                                  ? FontWeight.w600
+                                                  : FontWeight.normal,
+                                        ),
+                                        checkmarkColor: Colors.white,
+                                        onSelected: (bool isSelected) {
+                                          academicYearSelected(e);
+                                        },
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          )
+                        : NotFoundWidget(
+                            message:
+                                "No se encontro ningún año académico en el que este matriculado",
+                            alto: height,
+                            ancho: width),
                     divider20,
                     !_isLoading
                         ? responseWidget

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../Constants/font.dart';
 import '../Constants/space_between.dart';
 
 class NotFoundWidget extends StatefulWidget {
@@ -29,7 +30,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
               width: widget.ancho * 0.8,
               height: widget.alto * 0.4,
               child: const Image(
-                image: AssetImage (
+                image: AssetImage(
                   'assets/images/no-result.png',
                 ),
                 fit: BoxFit.fill,
@@ -40,10 +41,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
               widget.message,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.black54,
-                fontSize: 16,
-              ),
+              style: paragraphTextStyle,
               textAlign: TextAlign.center,
             ),
           ],

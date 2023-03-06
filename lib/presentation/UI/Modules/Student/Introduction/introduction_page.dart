@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jhon_hopkins_edu/dominio/Utils/sp_global.dart';
-import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
 import 'dart:math';
+import '../../../Shared/Constants/font.dart';
 import '../../../Shared/Constants/presentation_messages.dart';
 import '../../../Shared/Constants/space_between.dart';
 
@@ -56,30 +56,20 @@ class _IntroductionPageState extends State<IntroductionPage> {
                 const Text(
                   "Bienvenido: ",
                   maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w200,
-                    color: kBrandPrimaryColor,
-                  ),
+                  style: subTitleBoldTextStyle,
                 ),
                 Text(
                   _shared.fullName.toUpperCase(),
-                  maxLines: 2,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
-                    color: kBrandPrimaryColor,
-                  ),
+                  style: paragraphBoldTextStyle,
                 ),
                 divider12,
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                  ),
+                  style: paragraphTextStyle,
                 ),
                 divider20,
               ],
