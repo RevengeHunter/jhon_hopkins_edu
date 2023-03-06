@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/academic_year_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Services/Attendance/attendance_service.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/GeneralWidgets/loading_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../../dominio/Models/attendance_model.dart';
 import '../../../../../dominio/Utils/academic_year_list_global.dart';
@@ -44,12 +45,20 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
         if (value != null) {
           _attendanceList = value;
 
+          List<Widget> _attendanceListWithStatus = [];
+
+          _attendanceList.forEach((element) {
+            Icon attendanceStatusIcon = getIconStatusAttendance(element);
+            _attendanceListWithStatus.add(
+              AttendanceCardInformationWidget(
+                attendanceModel: element,
+                attendaceStatusIcon: attendanceStatusIcon,
+              ),
+            );
+          });
+
           responseWidget = Column(
-            children: _attendanceList
-                .map(
-                  (e) => AttendanceCardInformationWidget(attendanceModel: e),
-                )
-                .toList(),
+            children: _attendanceListWithStatus,
           );
 
           _isLoading = false;
@@ -69,6 +78,37 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
         return;
       });
     }
+  }
+
+  Icon getIconStatusAttendance(AttendanceModel attendanceModel) {
+    double attendancePercentage =
+        ((attendanceModel.quantityAttended * 100) / attendanceModel.total);
+
+    late Icon _attendanceStatusIcon;
+
+    if (attendancePercentage >= 60.0) {
+      _attendanceStatusIcon = Icon(
+        FontAwesomeIcons.solidFaceSmileBeam,
+        color: trafficLightColor["Great"],
+      );
+    } else if (60.0 > attendancePercentage && attendancePercentage > 30.0) {
+      _attendanceStatusIcon = Icon(
+        FontAwesomeIcons.solidFaceMeh,
+        color: trafficLightColor["Caution"],
+      );
+    } else if (attendancePercentage <= 30.0) {
+      _attendanceStatusIcon = Icon(
+        FontAwesomeIcons.solidFaceFrown,
+        color: trafficLightColor["Fail"],
+      );
+    } else {
+      _attendanceStatusIcon = Icon(
+        FontAwesomeIcons.lock,
+        color: kBrandPrimaryColor,
+      );
+    }
+
+    return _attendanceStatusIcon;
   }
 
   @override

@@ -201,8 +201,7 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                       textAlign: TextAlign.center,
                     ),
                     divider12,
-                    _academicYearListGlobal
-                        .getAcademicYearList.isNotEmpty
+                    _academicYearListGlobal.getAcademicYearList.isNotEmpty
                         ? Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -250,7 +249,8 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                             message:
                                 "No se encontro ningún año académico en el que este matriculado",
                             alto: height,
-                            ancho: width),
+                            ancho: width,
+                          ),
                     divider20,
                     !_isLoading
                         ? responseWidget

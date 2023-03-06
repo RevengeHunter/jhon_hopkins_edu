@@ -4,6 +4,8 @@ import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/month.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/space_between.dart';
 
+import '../../../../Shared/Constants/font.dart';
+
 class PaymentCardInformationWidget extends StatelessWidget {
   PaymentModel paymentModel;
 
@@ -30,35 +32,48 @@ class PaymentCardInformationWidget extends StatelessWidget {
         minVerticalPadding: 2.5,
         horizontalTitleGap: 1.0,
         leading: Icon(
-          paymentModel.debt == 0 ? Icons.check_circle : Icons.dangerous,
-          color: paymentModel.debt == 0 ? Colors.green : Colors.redAccent,
+          paymentModel.debt == 0 ? Icons.check_circle : Icons.attach_money,
+          color: paymentModel.debt == 0 ? Colors.green : kBrandPrimaryColor,
           size: 30.0,
         ),
         title: Text(
           paymentModel.paymentConceptName,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: kBrandPrimaryColor,
-          ),
-        ),
-        subtitle: Text(
-          paymentModel.debt != 0 &&  paymentModel.picture.isEmpty ? "Estado: pago pendiente"
-          : paymentModel.debt != 0 &&  paymentModel.picture.isNotEmpty ? "Estado: pendiente validar pago"
-          : "Estado: pago cancelado",
-          style: const TextStyle(
-            fontSize: 12.0,
-          ),
-          overflow: TextOverflow.ellipsis,
           maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: paragraphCardBoldTextStyle,
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Chip(
+              label: Text(
+                paymentModel.debt != 0 && paymentModel.picture.isEmpty
+                    ? "por pagar"
+                    : paymentModel.debt != 0 && paymentModel.picture.isNotEmpty
+                        ? "por validar"
+                        : "pagado",
+                style: const TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              backgroundColor:
+                  paymentModel.debt != 0 && paymentModel.picture.isEmpty
+                      ? Colors.redAccent
+                      : paymentModel.debt != 0 && paymentModel.picture.isNotEmpty
+                          ? Colors.orangeAccent
+                          : Colors.green,
+            ),
+          ],
         ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              paymentModel.monthId != 0 ? "${months[paymentModel.monthId]}" : "",
+              paymentModel.monthId != 0
+                  ? "${months[paymentModel.monthId]}"
+                  : "",
               style: const TextStyle(
                 fontSize: 12.0,
               ),

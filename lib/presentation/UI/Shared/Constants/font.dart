@@ -34,3 +34,9 @@ const TextStyle paragraphTextStyle = TextStyle(
 const TextStyle chipTextStyle = TextStyle(
   fontSize: 18.0,
 );
+
+const TextStyle paragraphCardBoldTextStyle = TextStyle(
+  fontSize: 17.0,
+  fontWeight: FontWeight.w500,
+  color: kBrandPrimaryColor,
+);

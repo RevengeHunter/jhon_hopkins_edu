@@ -45,12 +45,8 @@ class _StudentMainPageState extends State<StudentMainPage> {
   int _currentPage = 0;
 
   reGoogleSignIn() async {
-    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
-
-    if (_googleSignInAccount == null) return;
-
-    UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_googleSignInAccount.email);
+    UserModel? userModel =
+        await authenticationLoginService.getExternalAuthenticate(_prefs.email);
 
     if (userModel == null) return;
     if (!userModel.roles.contains('Student')) return;
@@ -69,11 +65,11 @@ class _StudentMainPageState extends State<StudentMainPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // if (_googleSignIn.currentUser == null) {
-    //   reGoogleSignIn();
-    // } else {
+    if (_googleSignIn.currentUser == null) {
+      reGoogleSignIn();
+    } else {
       getGlobals();
-    //}
+    }
   }
 
   @override
@@ -106,7 +102,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.pending,
               color:
-              _currentPage == 0 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 0 ? kBrandPrimaryColor : kBrandSecondaryColor,
             ),
             label: "Inicio",
           ),

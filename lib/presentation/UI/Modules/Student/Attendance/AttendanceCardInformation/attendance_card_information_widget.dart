@@ -8,9 +8,11 @@ import '../../../../Shared/GeneralWidgets/chip_information_widget.dart';
 
 class AttendanceCardInformationWidget extends StatelessWidget {
   AttendanceModel attendanceModel;
+  Icon attendaceStatusIcon;
 
   AttendanceCardInformationWidget({
     required this.attendanceModel,
+    required this.attendaceStatusIcon,
   });
 
   @override
@@ -26,7 +28,7 @@ class AttendanceCardInformationWidget extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 5,
-            offset: Offset(4, 4),
+            offset: const Offset(4, 4),
           ),
         ],
       ),
@@ -45,16 +47,10 @@ class AttendanceCardInformationWidget extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   color: kBrandPrimaryColor,
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
-              Text(
-                "${((attendanceModel.quantityAttended*100)/attendanceModel.total).toStringAsFixed(1)}%",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
-                  color: kBrandPrimaryColor,
-
-                ),
-              ),
+              attendaceStatusIcon,
             ],
           ),
           Text(
@@ -98,9 +94,16 @@ class AttendanceCardInformationWidget extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>AttendanceAbsentDetailPage(attendanceModel: attendanceModel,)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AttendanceAbsentDetailPage(
+                                attendanceModel: attendanceModel,
+                              )));
                 },
-                style: ElevatedButton.styleFrom(primary: kBrandPrimaryColor,),
+                style: ElevatedButton.styleFrom(
+                  primary: kBrandPrimaryColor,
+                ),
                 child: const Text(
                   "Inasistencias",
                   style: TextStyle(
