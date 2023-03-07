@@ -189,6 +189,9 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const SizedBox(
+                      width: double.infinity,
+                    ),
                     divider12,
                     const Text(
                       "Mis deudas",

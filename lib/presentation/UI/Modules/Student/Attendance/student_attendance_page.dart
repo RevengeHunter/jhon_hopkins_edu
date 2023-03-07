@@ -81,8 +81,7 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
   }
 
   Icon getIconStatusAttendance(AttendanceModel attendanceModel) {
-    double attendancePercentage =
-        ((attendanceModel.quantityAttended * 100) / attendanceModel.total);
+    double attendancePercentage = attendanceModel.getAttendancePorcentage();
 
     late Icon _attendanceStatusIcon;
 
@@ -102,7 +101,7 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
         color: trafficLightColor["Fail"],
       );
     } else {
-      _attendanceStatusIcon = Icon(
+      _attendanceStatusIcon = const Icon(
         FontAwesomeIcons.lock,
         color: kBrandPrimaryColor,
       );
@@ -129,6 +128,9 @@ class _StudentAttendancePageState extends State<StudentAttendancePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    const SizedBox(
+                      width: double.infinity,
+                    ),
                     divider12,
                     const Text(
                       "Mi asistencia",

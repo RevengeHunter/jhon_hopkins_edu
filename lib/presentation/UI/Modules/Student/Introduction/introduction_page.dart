@@ -34,49 +34,53 @@ class _IntroductionPageState extends State<IntroductionPage> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: height * 0.50,
-            width: width * 0.8,
-            padding:
-                const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: width,
+                    height: height*0.15,
+                  ),
+                  divider12,
+                  Image.asset(
+                    'assets/images/blue-logo.png',
+                  ),
+                  const Text(
+                    "Bienvenido: ",
+                    maxLines: 1,
+                    style: subTitleBoldTextStyle,
+                  ),
+                  Text(
+                    _shared.fullName.toUpperCase(),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: paragraphBoldTextStyle,
+                  ),
+                  divider12,
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: paragraphTextStyle,
+                  ),
+                  divider20,
+                  SizedBox(
+                    width: width,
+                    height: height*0.15,
+                  )
+                ],
+              ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/blue-logo.png',
-                ),
-                const Text(
-                  "Bienvenido: ",
-                  maxLines: 1,
-                  style: subTitleBoldTextStyle,
-                ),
-                Text(
-                  _shared.fullName.toUpperCase(),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: paragraphBoldTextStyle,
-                ),
-                divider12,
-                Text(
-                  message,
-                  textAlign: TextAlign.center,
-                  style: paragraphTextStyle,
-                ),
-                divider20,
-              ],
-            ),
-          ),
+          ] ,
         ),
-      ],
+      ),
     );
   }
 }

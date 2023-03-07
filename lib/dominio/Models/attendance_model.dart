@@ -36,6 +36,11 @@ class AttendanceModel {
     "quantityJustify": quantityJustify,
     "details": List<dynamic>.from(details??[].map((x) => x.toJson())),
   };
+
+  double getAttendancePorcentage(){
+    double attendancePercentage = ((quantityAttended * 100) / total);
+    return attendancePercentage;
+  }
 }
 
 class Detail {
