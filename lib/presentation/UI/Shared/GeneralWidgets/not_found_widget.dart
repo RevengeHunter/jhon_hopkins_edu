@@ -26,9 +26,9 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
       child: Center(
         child: Column(
           children: [
-            SizedBox(
-              width: (widget.ancho < 900) ? widget.ancho * 0.4 : widget.ancho * 0.8,
-              height: (widget.alto < 350) ? widget.alto * 0.4 : widget.alto * 0.8,
+            Container(
+              width: (widget.ancho < 800) ? widget.ancho * 0.8 : widget.ancho * 0.2,
+              height: (widget.alto < 350) ? widget.alto * 0.9 : widget.alto * 0.4,
               child: const Image(
                 image: AssetImage(
                   'assets/images/no-result.png',

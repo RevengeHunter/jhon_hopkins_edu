@@ -89,31 +89,34 @@ class AttendanceCardInformationWidget extends StatelessWidget {
             color: kBrandPrimaryColor.withOpacity(0.3),
           ),
           divider6,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AttendanceAbsentDetailPage(
-                                attendanceModel: attendanceModel,
-                              )));
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: kBrandPrimaryColor,
-                ),
-                child: const Text(
-                  "Inasistencias",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          attendanceModel.quantityAbsent > 0
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AttendanceAbsentDetailPage(
+                                      attendanceModel: attendanceModel,
+                                    )));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: kBrandPrimaryColor,
+                      ),
+                      child: const Text(
+                        "Inasistencias",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
         ],
       ),
     );
