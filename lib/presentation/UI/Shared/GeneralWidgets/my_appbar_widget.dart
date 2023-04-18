@@ -33,22 +33,44 @@ class MyAppBarWidget extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                "Grado: ${_prefs.gradeName}",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withOpacity(0.75),
-                ),
-              ),
-              dividerWidth10,
-              Text(
-                "Sección: ${_prefs.sectionName}",
-                style: TextStyle(
+              Expanded(
+                child: Text(
+                  "Grado: ${_prefs.gradeName}",
+                  style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Colors.white.withOpacity(0.75),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              dividerWidth10,
+              Expanded(
+                child: Text(
+                  "Sección: ${_prefs.sectionName}",
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white.withOpacity(0.75),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              dividerWidth10,
+              Expanded(
+                child: Text(
+                  "Salón: ${_prefs.roomName}",
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white.withOpacity(0.75),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

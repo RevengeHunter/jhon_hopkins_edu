@@ -7,6 +7,8 @@ class EnrollmentCurrentModel {
     required this.gradeName,
     required this.levelName,
     required this.statusEnrollment,
+    required this.roomId,
+    required this.roomName,
   });
 
   int id;
@@ -16,6 +18,8 @@ class EnrollmentCurrentModel {
   String gradeName;
   String levelName;
   String statusEnrollment;
+  int? roomId;
+  String? roomName;
 
   factory EnrollmentCurrentModel.fromJson(Map<String, dynamic> json) => EnrollmentCurrentModel(
     id: json["id"],
@@ -25,6 +29,8 @@ class EnrollmentCurrentModel {
     gradeName: json["gradeName"],
     levelName: json["levelName"],
     statusEnrollment: json["statusEnrollment"],
+    roomId: json["roomId"] ?? 0,
+    roomName: json["roomName"] ?? "-",
   );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +41,7 @@ class EnrollmentCurrentModel {
     "gradeName": gradeName,
     "levelName": levelName,
     "statusEnrollment": statusEnrollment,
+    "roomId": roomId,
+    "roomName": roomName,
   };
 }

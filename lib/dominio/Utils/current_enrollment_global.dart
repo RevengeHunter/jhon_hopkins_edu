@@ -27,11 +27,14 @@ class CurrentEnrollmentGlobal {
       gradeName: enrollmentCurrentModel.gradeName,
       levelName: enrollmentCurrentModel.levelName,
       statusEnrollment: enrollmentCurrentModel.statusEnrollment,
+      roomId: enrollmentCurrentModel.roomId,
+      roomName: enrollmentCurrentModel.roomName,
     );
 
     _prefs.gradeName = enrollmentCurrentModel.gradeName;
     _prefs.sectionName = enrollmentCurrentModel.sectionName;
-
+    _prefs.roomName = enrollmentCurrentModel.roomName ?? "-";
+    print(_enrollmentCurrentModel.roomName);
     return _enrollmentCurrentModel;
   }
 

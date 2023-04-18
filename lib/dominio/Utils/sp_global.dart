@@ -29,11 +29,6 @@ class SPGlobal{
   }
   String get jwt => _prefs.getString('jwt')??"";
 
-  // set idToken(String value){
-  //   _prefs.setString("idToken", value);
-  // }
-  // String get idToken => _prefs.getString('idToken')??"";
-
   set fullName(String value){
     _prefs.setString("fullName", value);
   }
@@ -58,6 +53,11 @@ class SPGlobal{
     _prefs.setString("sectionName", value);
   }
   String get sectionName => _prefs.getString('sectionName')??"";
+
+  set roomName(String value){
+    _prefs.setString("roomName", value);
+  }
+  String get roomName => _prefs.getString('roomName')??"";
 
   set gradeName(String value){
     _prefs.setString("gradeName", value);
