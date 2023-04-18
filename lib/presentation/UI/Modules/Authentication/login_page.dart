@@ -53,11 +53,29 @@ class _LoginPageState extends State<LoginPage> {
 
     /*Comentar si se pasa a prod*/
     UserModel? userModel = await authenticationLoginService
-       .getExternalAuthenticate(_textEditingController.text);
+        .getExternalAuthenticate(_textEditingController.text);
 
     if (userModel == null) {
       _isLoading = false;
       setState(() {});
+      return;
+    }
+
+    RegExp nifRegex = RegExp(r'^[0-9]{8}$');
+    if (!userModel.roles.contains('Student') ||
+        !nifRegex.hasMatch(userModel.userName)) {
+      _isLoading = false;
+      setState(() {});
+
+      final snackBar = SnackBar(
+        content: const Text('Usted no es estudiante de la institución.'),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       return;
     }
 
@@ -67,17 +85,19 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
     _prefs.email = _textEditingController.text;
-    _prefs.image = "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
+    _prefs.image =
+        "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
     // _prefs.email = _googleSignInAccount.email;//_textEditingController.text;
     // _prefs.image = _googleSignInAccount.photoUrl!;//"https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
 
     PersonModel? personModel = await _personService.getPerson();
-    if (personModel == null){
+    if (personModel == null) {
       _isLoading = false;
       setState(() {});
       return;
     }
-    _prefs.fullName = '${personModel.firstName} ${personModel.paternalSurname} ${personModel.maternalSurname}';
+    _prefs.fullName =
+        '${personModel.firstName} ${personModel.paternalSurname} ${personModel.maternalSurname}';
 
     _academicYearListGlobal.createAcademicYearList();
     await _currentEnrollmentGlobal.createCurrentEnrollment();

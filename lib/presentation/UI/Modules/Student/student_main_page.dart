@@ -49,7 +49,9 @@ class _StudentMainPageState extends State<StudentMainPage> {
         await authenticationLoginService.getExternalAuthenticate(_prefs.email);
 
     if (userModel == null) return;
-    if (!userModel.roles.contains('Student')) return;
+    RegExp nifRegex = RegExp(r'^[0-9]{8}$');
+    if (!userModel.roles.contains('Student') ||
+        !nifRegex.hasMatch(userModel.userName)) return;
 
     _prefs.jwt = userModel.jwtToken;
 

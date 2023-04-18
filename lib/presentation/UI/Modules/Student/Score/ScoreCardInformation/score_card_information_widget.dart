@@ -89,10 +89,12 @@ class _ScoreCardInformationWidgetState
                 child: Text(
                   widget.courseName,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 22,
                     fontWeight: FontWeight.w800,
                     color: kBrandPrimaryColor,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

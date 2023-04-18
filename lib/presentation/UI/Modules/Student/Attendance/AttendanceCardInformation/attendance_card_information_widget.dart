@@ -39,16 +39,19 @@ class AttendanceCardInformationWidget extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Text(
-                attendanceModel.courseName,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: kBrandPrimaryColor,
+              Expanded(
+                child: Text(
+                  attendanceModel.courseName,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    color: kBrandPrimaryColor,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
               ),
               attendaceStatusIcon,
             ],
