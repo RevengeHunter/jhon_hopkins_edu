@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.jwt = userModel.jwtToken;
     _prefs.email = _textEditingController.text;
     _prefs.image =
-        "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
+        "https://images.pexels.com/photos/8285743/pexels-photo-8285743.jpeg";
     // _prefs.email = _googleSignInAccount.email;//_textEditingController.text;
     // _prefs.image = _googleSignInAccount.photoUrl!;//"https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg";
 

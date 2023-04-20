@@ -6,12 +6,10 @@ import '../../Modules/Authentication/login_page.dart';
 import '../Constants/colors.dart';
 
 class MyAppBarWidget extends StatelessWidget {
-  String text;
-  String image;
+  String studentFoto;
 
   MyAppBarWidget({
-    required this.text,
-    required this.image,
+    required this.studentFoto,
   });
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ["email"]);
@@ -21,61 +19,15 @@ class MyAppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: kBrandPrimaryColor,
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
-            ),
+      title: Container(
+        width: 152.0,
+        height: 50.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/logo-toolbar.png"),
+            fit: BoxFit.fill,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(
-                  "Grado: ${_prefs.gradeName}",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withOpacity(0.75),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              dividerWidth10,
-              Expanded(
-                child: Text(
-                  "Sección: ${_prefs.sectionName}",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white.withOpacity(0.75),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              dividerWidth10,
-              Expanded(
-                child: Text(
-                  "Salón: ${_prefs.roomName}",
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white.withOpacity(0.75),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
       titleSpacing: 15.0,
       elevation: 0,
@@ -88,7 +40,7 @@ class MyAppBarWidget extends StatelessWidget {
           child: CircleAvatar(
             radius: 25,
             foregroundImage: NetworkImage(
-              image,
+              studentFoto,
             ),
             child: PopupMenuButton(
               onSelected: (value) {
@@ -101,6 +53,7 @@ class MyAppBarWidget extends StatelessWidget {
                   _prefs.email = "";
                   _prefs.sectionName = "";
                   _prefs.gradeName = "";
+                  _prefs.roomName = "";
                   _prefs.isLogin = false;
                   _prefs.jwt = "";
 
@@ -111,7 +64,7 @@ class MyAppBarWidget extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => LoginPage(),
                     ),
-                        (route) => false,
+                    (route) => false,
                   );
                 }
               },

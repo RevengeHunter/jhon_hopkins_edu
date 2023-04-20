@@ -5,6 +5,8 @@ const Color kBrandFontColor = Color(0xff000000);
 const Color kBrandPrimaryColor = Color(0xff1C3152);
 const Color kBrandSecondaryColor = Color(0xff3B475C);
 const Color kBrandTertiary = Color(0xffBDC6D3);
+const Color kLogin01 = Color(0xff926F1D);
+const Color kLogin02 = Color(0xffFFFFFF);
 
 Map<String, Color> statusColor = {
   "Selected": const Color(0xffee6083),

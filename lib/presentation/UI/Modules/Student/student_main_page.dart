@@ -79,10 +79,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
-        child: MyAppBarWidget(
-          text: widget.studentName,
-          image: widget.studentFoto,
-        ),
+        child: MyAppBarWidget(studentFoto: widget.studentFoto,),
       ),
       body: _pages[_currentPage],
       bottomNavigationBar: BottomNavigationBar(
