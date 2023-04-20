@@ -126,7 +126,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                               width: 90,
                               height: 100,
                               decoration: BoxDecoration(
-                                color: kLogin02.withOpacity(0.5),
+                                color: kLogin02.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Column(
@@ -149,7 +149,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                               width: 90,
                               height: 100,
                               decoration: BoxDecoration(
-                                color: kLogin02.withOpacity(0.5),
+                                color: kLogin02.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Column(
@@ -172,7 +172,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                               width: 90,
                               height: 100,
                               decoration: BoxDecoration(
-                                color: kLogin02.withOpacity(0.5),
+                                color: kLogin02.withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Column(

@@ -87,10 +87,10 @@ class _StudentMainPageState extends State<StudentMainPage> {
         selectedLabelStyle: const TextStyle(
           fontSize: 13.0,
         ),
-        selectedFontSize: 13.0,
-        unselectedFontSize: 11.0,
-        selectedItemColor: kBrandPrimaryColor,
-        unselectedItemColor: kBrandSecondaryColor,
+        selectedFontSize: 14.0,
+        unselectedFontSize: 10.0,
+        selectedItemColor: kBrandMenuPrimaryColor,
+        unselectedItemColor: kBrandMenuSecondaryColor,
         currentIndex: _currentPage,
         onTap: (int value) {
           _currentPage = value;
@@ -101,7 +101,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.pending,
               color:
-                  _currentPage == 0 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 0 ? kBrandMenuPrimaryColor : kBrandMenuSecondaryColor,
             ),
             label: "Inicio",
           ),
@@ -109,7 +109,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.list_alt_rounded,
               color:
-                  _currentPage == 1 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 1 ? kBrandMenuPrimaryColor : kBrandMenuSecondaryColor,
             ),
             label: "Notas",
           ),
@@ -117,7 +117,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.verified_user_rounded,
               color:
-                  _currentPage == 2 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 2 ? kBrandMenuPrimaryColor : kBrandMenuSecondaryColor,
             ),
             label: "Asistencia",
           ),
@@ -125,7 +125,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
             icon: Icon(
               Icons.account_balance_wallet,
               color:
-                  _currentPage == 3 ? kBrandPrimaryColor : kBrandSecondaryColor,
+                  _currentPage == 3 ? kBrandMenuPrimaryColor : kBrandMenuSecondaryColor,
             ),
             label: "Deudas",
           ),

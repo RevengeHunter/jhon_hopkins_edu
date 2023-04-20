@@ -22,7 +22,7 @@ class MyAppBarWidget extends StatelessWidget {
       title: Container(
         width: 152.0,
         height: 50.0,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/logo-toolbar.png"),
             fit: BoxFit.fill,

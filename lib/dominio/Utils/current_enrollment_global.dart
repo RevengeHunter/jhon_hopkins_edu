@@ -34,7 +34,6 @@ class CurrentEnrollmentGlobal {
     _prefs.gradeName = enrollmentCurrentModel.gradeName;
     _prefs.sectionName = enrollmentCurrentModel.sectionName;
     _prefs.roomName = enrollmentCurrentModel.roomName ?? "-";
-    print(_enrollmentCurrentModel.roomName);
     return _enrollmentCurrentModel;
   }
 
