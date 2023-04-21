@@ -46,6 +46,7 @@ dependencies:
   intl: ^0.17.0
   flutter_svg: ^1.1.5
   font_awesome_flutter: ^10.4.0
+  connectivity_plus: ^2.3.8
 
 dev_dependencies:
   flutter_test:

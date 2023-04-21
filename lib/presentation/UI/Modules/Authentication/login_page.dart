@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/user_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Services/Authentication/authentication_login_service.dart';
@@ -7,6 +10,7 @@ import 'package:jhon_hopkins_edu/dominio/Utils/sp_global.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Modules/Student/student_main_page.dart';
 import 'package:jhon_hopkins_edu/presentation/UI/Shared/Constants/colors.dart';
 import 'package:jhon_hopkins_edu/Presentation/UI/Shared/Constants/space_between.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../../dominio/Models/person_model.dart';
 import '../../../../dominio/Services/Person/person_service.dart';
 import '../../../../dominio/Utils/academic_year_list_global.dart';
@@ -32,6 +36,10 @@ class _LoginPageState extends State<LoginPage> {
       CurrentEnrollmentGlobal();
   final PersonService _personService = PersonService();
 
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
   bool _isLoading = false;
 
   final TextEditingController _textEditingController = TextEditingController();
@@ -51,11 +59,17 @@ class _LoginPageState extends State<LoginPage> {
     // UserModel? userModel = await authenticationLoginService
     //     .getExternalAuthenticate(_googleSignInAccount.email);
 
+    if(_connectionStatus == ConnectivityResult.none){
+      _isLoading = false;
+      setState(() {});
+      return;
+    }
+
     /*Comentar si se pasa a prod*/
     UserModel? userModel = await authenticationLoginService
         .getExternalAuthenticate(_textEditingController.text);
 
-    if (userModel == null) {
+    if (userModel == null || _connectionStatus == ConnectivityResult.none) {
       _isLoading = false;
       setState(() {});
       return;
@@ -115,6 +129,43 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    initConnectivity();
+
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
+  }
+
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      return;
+    }
+
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -166,10 +217,13 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             divider20,
                             ElevatedButton(
-                              onPressed: () {
-                                _loginWithGoogle();
-                                // _googleSignIn.signOut();
-                              },
+                              onPressed:
+                                  _connectionStatus == ConnectivityResult.wifi
+                                      ? () {
+                                          _loginWithGoogle();
+                                          // _googleSignIn.signOut();
+                                        }
+                                      : null,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -188,6 +242,18 @@ class _LoginPageState extends State<LoginPage> {
                                 primary: kBrandPrimaryColor,
                               ),
                             ),
+                            _connectionStatus == ConnectivityResult.none
+                                ? divider20
+                                : const SizedBox(),
+                            _connectionStatus == ConnectivityResult.none
+                                ? const Text(
+                                    "No se detecta conexión a internet.",
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: Colors.redAccent,
+                                    ),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       )
