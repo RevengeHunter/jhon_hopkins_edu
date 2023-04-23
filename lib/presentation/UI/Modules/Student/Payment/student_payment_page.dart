@@ -258,9 +258,12 @@ class _StudentPaymentPageState extends State<StudentPaymentPage> {
                     !_isLoading
                         ? responseWidget
                         : SizedBox(
-                            height: height * 0.7,
+                            height: height * 0.45,
                             width: width,
-                            child: const LoadingWidget(),
+                            child: LoadingWidget(
+                              title: "Cargando sus pagos...",
+                              subTitle: "Por favor espere.",
+                            ),
                           ),
                     divider20,
                   ],

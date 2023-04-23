@@ -173,9 +173,12 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
                     !_isLoading
                         ? responseWidget
                         : SizedBox(
-                            height: height * 0.7,
+                            height: height * 0.45,
                             width: width,
-                            child: const LoadingWidget(),
+                            child: LoadingWidget(
+                              title: "Cargando los cursos y su nota...",
+                              subTitle: "Por favor espere.",
+                            ),
                           ),
                     divider20,
                   ],

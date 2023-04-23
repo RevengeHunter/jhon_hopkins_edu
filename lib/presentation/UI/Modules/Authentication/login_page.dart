@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
     // UserModel? userModel = await authenticationLoginService
     //     .getExternalAuthenticate(_googleSignInAccount.email);
 
-    if(_connectionStatus == ConnectivityResult.none){
+    if (_connectionStatus == ConnectivityResult.none) {
       _isLoading = false;
       setState(() {});
       return;
@@ -257,7 +257,11 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       )
-                    : const LoadingWidget(),
+                    : LoadingWidget(
+                        title: "Cargando servicios.",
+                        subTitle:
+                            "Por favor espere. Esto pueder tardar varios minutos...",
+                      ),
               ),
             ),
           ],
