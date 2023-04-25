@@ -51,63 +51,61 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       setState(() {});
       statusValue = e.academicYearId;
 
+      responseWidget = NotFoundWidget(
+        message:
+        "Aún no se tiene las notas del bimestre para el año académico seleccionado.",
+        alto: height,
+        ancho: width,
+      );
+
       _bimesterService.getAllBimesters(e.academicYearId).then((value) {
-        if (value.isNotEmpty) {
-          _bimesterModelList = value;
+        if (value.isEmpty) {
           _isLoading = false;
           setState(() {});
           return;
         }
-        _isLoading = false;
-        setState(() {});
-        return;
-      });
 
-      _scoreService.getConsolidationScore(e.academicYearId).then((value) {
-        if (value.isNotEmpty) {
+        _bimesterModelList = value;
+
+        _scoreService.getConsolidationScore(e.academicYearId).then((value) {
+          if (value.isEmpty) {
+            _isLoading = false;
+            setState(() {});
+            return;
+          }
+
           _scoreModelList = value;
-          _isLoading = false;
-          setState(() {});
-          return;
-        }
-        _isLoading = false;
-        setState(() {});
-        return;
-      });
 
-      _enrollmentService
-          .getEnrollmentWithCourseByAcademicPeriod(e.academicYearId)
-          .then((value) {
-        if (value.isNotEmpty) {
-          _enrollmentWithCourseModelList = value;
+          _enrollmentService
+              .getEnrollmentWithCourseByAcademicPeriod(e.academicYearId)
+              .then((value) {
+            if (value.isEmpty) {
+              _isLoading = false;
+              setState(() {});
+              return;
+            } else {
+              _enrollmentWithCourseModelList = value;
 
-          responseWidget = Column(
-            children: _enrollmentWithCourseModelList
-                .map(
-                  (e) => ScoreCardInformationWidget(
-                    courseName: e.courseName,
-                    idAcademicYear: statusValue,
-                    scoreConsolidationCourseList: _scoreModelList
-                        .where((element) => element.courseId == e.courseId)
-                        .toList(),
-                    bimesterModelList: _bimesterModelList,
-                  ),
-                )
-                .toList(),
-          );
+              responseWidget = Column(
+                children: _enrollmentWithCourseModelList
+                    .map(
+                      (e) => ScoreCardInformationWidget(
+                        courseName: e.courseName,
+                        idAcademicYear: statusValue,
+                        scoreConsolidationCourseList: _scoreModelList
+                            .where((element) => element.courseId == e.courseId)
+                            .toList(),
+                        bimesterModelList: _bimesterModelList,
+                      ),
+                    )
+                    .toList(),
+              );
+            }
 
-          setState(() {});
-          return;
-        }
-
-        responseWidget = NotFoundWidget(
-          message:
-              "Aún no se tiene las notas del bimestre para el año académico seleccionado.",
-          alto: height,
-          ancho: width,
-        );
-        setState(() {});
-        return;
+            _isLoading = false;
+            setState(() {});
+          });
+        });
       });
     }
   }
