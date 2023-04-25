@@ -47,6 +47,16 @@ dependencies:
   flutter_svg: ^1.1.5
   font_awesome_flutter: ^10.4.0
   connectivity_plus: ^2.3.8
+  flutter_native_splash: ^2.2.8
+
+# Run commands
+# flutter clean
+# flutter pub get
+# flutter pub run flutter_native_splash:create
+flutter_native_splash:
+  color: "#1C3154"
+  image: assets/images/white-logo.png
+  # background_image: assets/images/background.png
 
 dev_dependencies:
   flutter_test:

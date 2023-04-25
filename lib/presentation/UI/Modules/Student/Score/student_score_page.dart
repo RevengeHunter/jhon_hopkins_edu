@@ -3,7 +3,9 @@ import 'package:jhon_hopkins_edu/dominio/Models/score_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Services/Enrollment/enrollment_service.dart';
 import 'package:jhon_hopkins_edu/dominio/Services/Score/score_service.dart';
 import '../../../../../dominio/Models/academic_year_model.dart';
+import '../../../../../dominio/Models/bimester_model.dart';
 import '../../../../../dominio/Models/enrollment_with_course_model.dart';
+import '../../../../../dominio/Services/Bimester/bimester_service.dart';
 import '../../../../../dominio/Utils/academic_year_list_global.dart';
 import '../../../Shared/Constants/colors.dart';
 import '../../../Shared/Constants/font.dart';
@@ -20,6 +22,8 @@ class StudentRecordPage extends StatefulWidget {
 class _StudentRecordPageState extends State<StudentRecordPage> {
   final ScoreService _scoreService = ScoreService();
   final EnrollmentService _enrollmentService = EnrollmentService();
+  final BimesterService _bimesterService = BimesterService();
+  List<BimesterModel> _bimesterModelList = [];
   List<ScoreModel> _scoreModelList = [];
   List<EnrollmentWithCourseModel> _enrollmentWithCourseModelList = [];
 
@@ -46,6 +50,18 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
       _isLoading = true;
       setState(() {});
       statusValue = e.academicYearId;
+
+      _bimesterService.getAllBimesters(e.academicYearId).then((value) {
+        if (value.isNotEmpty) {
+          _bimesterModelList = value;
+          _isLoading = false;
+          setState(() {});
+          return;
+        }
+        _isLoading = false;
+        setState(() {});
+        return;
+      });
 
       _scoreService.getConsolidationScore(e.academicYearId).then((value) {
         if (value.isNotEmpty) {
@@ -74,6 +90,7 @@ class _StudentRecordPageState extends State<StudentRecordPage> {
                     scoreConsolidationCourseList: _scoreModelList
                         .where((element) => element.courseId == e.courseId)
                         .toList(),
+                    bimesterModelList: _bimesterModelList,
                   ),
                 )
                 .toList(),

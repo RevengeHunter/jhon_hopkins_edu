@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/bimester_model.dart';
 import 'package:jhon_hopkins_edu/dominio/Models/score_model.dart';
-import 'package:jhon_hopkins_edu/dominio/Services/Bimester/bimester_service.dart';
 
 import '../../../../Shared/Constants/colors.dart';
+import '../../../../Shared/Constants/score-equivalence.dart';
 import '../../../../Shared/Constants/space_between.dart';
 
 class ScoreCardInformationWidget extends StatefulWidget {
   int idAcademicYear;
   String courseName;
   List<ScoreModel> scoreConsolidationCourseList;
+  List<BimesterModel> bimesterModelList;
 
   ScoreCardInformationWidget({
     required this.idAcademicYear,
     required this.courseName,
     required this.scoreConsolidationCourseList,
+    required this.bimesterModelList,
   });
 
   @override
@@ -24,8 +26,6 @@ class ScoreCardInformationWidget extends StatefulWidget {
 
 class _ScoreCardInformationWidgetState
     extends State<ScoreCardInformationWidget> {
-  final BimesterService _bimesterService = BimesterService();
-  List<BimesterModel> _bimesterModelList = [];
   List<ScoreModel> scoreConsolidationCourseListAux = [];
   List<Map<String, dynamic>> bimesterScoreList = [];
 
@@ -36,22 +36,24 @@ class _ScoreCardInformationWidgetState
   }
 
   void getBimesters() async {
-    _bimesterModelList =
-        await _bimesterService.getAllBimesters(widget.idAcademicYear);
-
-    for (var element in _bimesterModelList) {
+    for (var element in widget.bimesterModelList) {
       Map<String, dynamic> bimesterScore = {};
       bimesterScore["bimester"] = element.name;
+
       if (widget.scoreConsolidationCourseList
               .where((i) => i.bimesterId == element.bimesterId)
               .toList()
               .length ==
           1) {
-        bimesterScore["score"] = widget.scoreConsolidationCourseList
+        double scoreValue = 0.0;
+        scoreValue = widget.scoreConsolidationCourseList
             .where((i) => i.bimesterId == element.bimesterId)
             .toList()
             .first
             .consolidationScoreValue;
+
+        bimesterScore["score"] =
+            ScoreEquivalenceConstant.getEquivalence(scoreValue);
       } else {
         bimesterScore["score"] = "-";
       }
@@ -111,7 +113,7 @@ class _ScoreCardInformationWidgetState
           const Divider(),
           divider3,
           GridView.builder(
-            itemCount: _bimesterModelList.length,
+            itemCount: widget.bimesterModelList.length,
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -141,6 +143,7 @@ class _ScoreCardInformationWidgetState
                         fontSize: 14.0,
                       ),
                     ),
+                    divider6,
                     Text(
                       bimesterScoreList[index]['score'].toString(),
                       style: const TextStyle(
