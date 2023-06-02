@@ -1,4 +1,7 @@
+// ignore_for_file: use_key_in_widget_constructors, must_be_immutable
+
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +50,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
   final List<Widget> _pages = [
     IntroductionPage(),
     StudentRecordPage(),
-    StudentAttendancePage(),
+    const StudentAttendancePage(),
     StudentPaymentPage(),
   ];
 
@@ -117,6 +120,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
+      developer.log('Couldn\'t check connectivity status', error: e);
       return;
     }
 
