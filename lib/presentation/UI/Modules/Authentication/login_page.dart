@@ -45,25 +45,30 @@ class _LoginPageState extends State<LoginPage> {
   //final TextEditingController _textEditingController = TextEditingController();
 
   void _loginWithGoogle() async {
-    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
-
     _isLoading = true;
     setState(() {});
-
-    if (_googleSignInAccount == null) {
-      _isLoading = false;
-      setState(() {});
-      return;
-    }
-
-    UserModel? userModel = await authenticationLoginService
-        .getExternalAuthenticate(_googleSignInAccount.email);
 
     if (_connectionStatus == ConnectivityResult.none) {
       _isLoading = false;
       setState(() {});
       return;
     }
+
+    GoogleSignInAccount? _googleSignInAccount = await _googleSignIn.signIn();
+
+    if (_googleSignInAccount == null) {
+      _isLoading = false;
+      await _googleSignIn.signOut();
+      setState(() {});
+      return;
+    }
+
+    GoogleSignInAuthentication _googleSignInAuth =
+        await _googleSignInAccount.authentication;
+
+    /*Comentar si esta en modo desarrollo*/
+    UserModel? userModel = await authenticationLoginService
+        .getExternalAuthenticate(_googleSignInAuth.idToken!);
 
     /*Comentar si se pasa a prod*/
     // UserModel? userModel = await authenticationLoginService
@@ -98,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
     _prefs.role = userModel.roles.first;
     _prefs.isLogin = true;
     _prefs.jwt = userModel.jwtToken;
+    _prefs.idToken = _googleSignInAuth.idToken!;
     _prefs.email = _googleSignInAccount.email;
     _prefs.image = _googleSignInAccount.photoUrl!;
     /*Comentar si se pasa a prod*/

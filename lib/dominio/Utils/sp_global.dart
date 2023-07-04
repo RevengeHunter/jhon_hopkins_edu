@@ -69,4 +69,9 @@ class SPGlobal{
   }
   bool get isLogin => _prefs.getBool('isLogin')??false;
 
+  set idToken(String value){
+    _prefs.setString("idToken", value);
+  }
+  String get idToken => _prefs.getString('idToken')??"";
+
 }
