@@ -71,8 +71,13 @@ class _StudentMainPageState extends State<StudentMainPage> {
       return;
     }
 
+    /*Comentar si esta en modo desarrollo*/
     UserModel? userModel =
-        await authenticationLoginService.getExternalAuthenticate(_prefs.email);
+        await authenticationLoginService.getExternalAuthenticate(_prefs.idToken);
+
+    /*Comentar si se pasa a prod*/
+    // UserModel? userModel =
+    // await authenticationLoginService.getExternalAuthenticate(_prefs.email);
 
     if (userModel == null || _connectionStatus == ConnectivityResult.none) {
       _isLoading = false;
